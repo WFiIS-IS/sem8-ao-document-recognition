@@ -170,22 +170,22 @@ personal = pd.read_csv("./personal.csv", header=0, dtype="str")
 
 font1 = cv2.FONT_HERSHEY_DUPLEX
 
-for i in range(1, 10):
+for i in range(0, 10):
     licence = licence_template.copy()
-    photo = cv2.imread(f"./faces/person{i:02}-1.png")
+    photo = cv2.imread(f"./faces/person{i+1:02}-1.png")
     person = personal.iloc[i]
-
-    print_lastname(licence, person["lastname"])
-    print_firstname(licence, person["firstname"])
-    print_signature(licence, f"{person["firstname"]} {person["lastname"]}")
-    print_other(licence, pesel=person["PESEL"])
-    print_category(licence)
 
     print_big_photo(licence, photo)
     print_small_photo(licence, photo)
 
     print_watermark(licence)
 
-    if not cv2.imwrite(f"./driving/person{i:02}.jpg", licence):
+    print_lastname(licence, person["lastname"])
+    print_firstname(licence, person["firstname"])
+    print_signature(licence, f'{person["firstname"]} {person["lastname"]}')
+    print_other(licence, pesel=person["PESEL"])
+    print_category(licence)
+
+    if not cv2.imwrite(f"./driving-licence/person{i+1:02}.jpg", licence):
         print("writing image failed (check directory existence)")
         break
