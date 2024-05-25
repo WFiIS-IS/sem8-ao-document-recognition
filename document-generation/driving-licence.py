@@ -180,11 +180,17 @@ for i in range(0, 10):
 
     print_watermark(licence)
 
-    print_lastname(licence, person["lastname"])
-    print_firstname(licence, person["firstname"])
-    print_signature(licence, f'{person["firstname"]} {person["lastname"]}')
-    print_other(licence, pesel=person["PESEL"])
-    print_category(licence)
+    print_lastname(licence, person["LastName"])
+    print_firstname(licence, person["FirstName"])
+    print_signature(licence, f'{person["FirstName"]} {person["LastName"]}')
+    print_other(licence, 
+                birthdate=person["DateOfBirth"], 
+                pesel=person["PESEL"],
+                licence_numer=person["DrivingLicenceNumber"],
+                startdate=person["DrivingLicenceIssueDate"],
+                enddate=person["DrivingLicenceValidityDate"],
+            )
+    print_category(licence, drive_category=person["DrivingLicenceCategories"])
 
     if not cv2.imwrite(f"./driving-licence/person{i+1:02}.jpg", licence):
         print("writing image failed (check directory existence)")
