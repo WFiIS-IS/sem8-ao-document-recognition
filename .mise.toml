@@ -1,0 +1,21 @@
+[tools]
+python = "3.12"
+
+[env.'_'.python]
+venv = { path = ".venv", create = true }
+
+[tasks.make-deps]
+run = "pip-compile -v"
+description = "Update dependencies"
+sources = ["pyproject.toml"]
+outputs = ["requirements.txt"]
+depends = ["install-pip-tools"]
+
+[tasks.install-deps]
+run = "pip-sync requirements.txt"
+description = "Install dependencies"
+sources = ["requirements.txt"]
+depends = ["install-pip-tools"]
+
+[tasks.install-pip-tools]
+run = "pip install pip-tools"
