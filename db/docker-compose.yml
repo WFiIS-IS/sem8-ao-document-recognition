@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: tensorchord/pgvecto-rs:pg16-v0.0.0-nightly.20240525
+    restart: always
+    ports:
+      - 5433:5432
+    volumes:
+      - ~/ao:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
