@@ -1,0 +1,3 @@
+[submodule "document-generation/stylegan3"]
+	path = document-generation/stylegan3
+	url = https://github.com/NVlabs/stylegan3.git
