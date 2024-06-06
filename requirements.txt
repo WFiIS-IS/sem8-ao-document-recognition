@@ -67,12 +67,17 @@ decorator==5.1.1
     # via ipython
 defusedxml==0.7.1
     # via nbconvert
+diff-match-patch==20230430
+    # via django-import-export
 distlib==0.3.8
     # via virtualenv
 django==5.0.6
     # via
     #   django-debug-toolbar
     #   django-extensions
+    #   django-import-export
+    #   django-simple-history
+    #   django-unfold
     #   djangorestframework
     #   drf-spectacular
     #   ylo-igbn (pyproject.toml)
@@ -81,6 +86,12 @@ django-debug-toolbar==4.3.0
 django-environ==0.11.2
     # via ylo-igbn (pyproject.toml)
 django-extensions==3.2.3
+    # via ylo-igbn (pyproject.toml)
+django-import-export==4.0.7
+    # via ylo-igbn (pyproject.toml)
+django-simple-history==3.7.0
+    # via ylo-igbn (pyproject.toml)
+django-unfold==0.26.0
     # via ylo-igbn (pyproject.toml)
 django-upgrade==1.16.0
     # via ylo-igbn (pyproject.toml)
@@ -412,6 +423,8 @@ stack-data==0.6.3
     # via ipython
 sympy==1.12
     # via torch
+tablib==3.5.0
+    # via django-import-export
 terminado==0.18.1
     # via
     #   jupyter-server
