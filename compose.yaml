@@ -1,0 +1,26 @@
+name: document-recognition
+
+x-pg-db-credentials: &pg-db-credentials
+  POSTGRES_USER: ${DB_USER:-postgres}
+  POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+  POSTGRES_DB: ${DB_NAME:-document-recognition}
+
+services:
+  database:
+    image: postgres:16.2
+    container_name: document-recognition-dev-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - document-recognition-dev-db:/var/lib/postgresql/data
+    environment:
+      <<: *pg-db-credentials
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${DB_NAME:-document-recognition} -U $${DB_USER:-postgres}"]
+      interval: 3s
+      timeout: 5s
+      retries: 5
+
+
+volumes:
+  document-recognition-dev-db:

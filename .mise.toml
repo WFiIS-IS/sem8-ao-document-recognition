@@ -19,3 +19,29 @@ depends = ["install-pip-tools"]
 
 [tasks.install-pip-tools]
 run = "pip install pip-tools"
+
+[tasks.dev]
+run = "python manage.py runserver"
+description = "Run the development server"
+
+[tasks.migrate]
+run = "python manage.py migrate"
+description = "Apply database migrations"
+depends = ["docker-dev"]
+
+[tasks.docker-dev]
+run = "docker compose up -d"
+description = "Run delopment server in docker"
+
+[tasks.install-pre-commit]
+run = "pre-commit install"
+description = "Install pre-commit git hooks"
+sources = [".pre-commit-config.yaml"]
+
+[tasks.load-fixtures]
+run = "python manage.py loaddata fixtures/*.yaml"
+depends = ["migrate"]
+
+[tasks.setup-dev]
+description = "Setup development environment"
+depends = ["install-deps", "install-pre-commit", "migrate", "load-fixtures"]
