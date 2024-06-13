@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "debug_toolbar",
     "rest_framework",
-    "document_recognition.utils",
+    "api.utils",
 ]
 
 MIDDLEWARE = [
@@ -70,7 +70,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "document_recognition.urls"
+ROOT_URLCONF = "api.urls"
 
 TEMPLATES = [
     {
@@ -88,7 +88,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "document_recognition.wsgi.application"
+WSGI_APPLICATION = "api.wsgi.application"
 
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",

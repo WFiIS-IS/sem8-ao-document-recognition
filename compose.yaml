@@ -7,7 +7,7 @@ x-pg-db-credentials: &pg-db-credentials
 
 services:
   database:
-    image: postgres:16.2
+    image: tensorchord/pgvecto-rs:pg16-v0.0.0-nightly.20240525
     container_name: document-recognition-dev-db
     ports:
       - "5432:5432"
