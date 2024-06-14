@@ -36,6 +36,8 @@ dependencies = [
     "django-upgrade==1.16.0",
     "psycopg[binary]~=3.1.18",
     "django-unfold==0.26.0",
+    "pgvector",
+    "auto_dataclass",
 ]
 [tool.pip-tools]
 extra-index-url = ["https://download.pytorch.org/whl/cu118"]

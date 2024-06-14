@@ -1,0 +1,13 @@
+from rest_framework import serializers
+
+from api.persons.models import Person
+
+
+class PersonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Person
+        fields = ["pesel", "first_name", "last_name"]
+
+
+class ImageUploadSerializer(serializers.Serializer):
+    image = serializers.ImageField(allow_empty_file=False, use_url=False)

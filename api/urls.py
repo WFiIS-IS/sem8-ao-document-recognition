@@ -26,6 +26,7 @@ from drf_spectacular.views import (
 urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
     path("todos/", include("api.todo_api.urls", namespace="todos")),
+    path("person/", include("api.persons.urls", namespace="persons")),
     path(
         "api/schema/swagger-ui/",
         SpectacularSwaggerView.as_view(url_name="schema"),
