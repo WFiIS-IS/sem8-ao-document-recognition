@@ -11,3 +11,10 @@ class PersonSerializer(serializers.ModelSerializer):
 
 class ImageUploadSerializer(serializers.Serializer):
     image = serializers.ImageField(allow_empty_file=False, use_url=False)
+
+
+class APersonSerializer(serializers.Serializer):
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    personal_number = serializers.CharField()
+    date_of_birth = serializers.DateField()
