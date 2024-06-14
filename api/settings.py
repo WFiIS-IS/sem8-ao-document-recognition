@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "rest_framework",
     "api.utils",
+    "api.todo_api",
 ]
 
 MIDDLEWARE = [
