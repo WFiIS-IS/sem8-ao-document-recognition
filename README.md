@@ -1,9 +1,6 @@
-# You look once -- I greet by name
+# Document Generation
 
 ## Face recognition
-
-We can utilize (50k github stars)
-
 https://github.com/ageitgey/face_recognition
 
 for face recognition. Is is popular, installable via pip and has example of face identification and comparison
@@ -20,11 +17,11 @@ StyleGAN3 by nvidia: https://github.com/NVlabs/stylegan3
 
 DeepFaceLab here just for fun: https://github.com/iperov/DeepFaceLab
 
-## Backend development
+# Backend development
 
-### Prerequisites
+## Prerequisites
 
-#### Mise installation
+### Mise
 
 The latest mise installation can be found at [the official mise website](https://mise.jdx.dev/getting-started.html)
 
@@ -56,7 +53,7 @@ $ mise version
 2024.4.5 linux-arm64 (d60d850 2024-04-15)
 ```
 
-#### System dependencies
+### System dependencies
 
 - Debian/Ubuntu
 
@@ -67,7 +64,9 @@ sudo apt install build-essential gdb lcov pkg-config \
       lzma lzma-dev tk-dev uuid-dev zlib1g-dev
 ```
 
-### Setting up the project
+### Docker
+
+## Setting up the project
 
 1. Clone the repository
 

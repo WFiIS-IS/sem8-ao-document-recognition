@@ -4,6 +4,9 @@ python = "3.12"
 [env.'_'.python]
 venv = { path = ".venv", create = true }
 
+[tasks.install-pip-tools]
+run = "pip install pip-tools"
+
 [tasks.make-deps]
 run = "pip-compile -v"
 description = "Update dependencies"
@@ -17,26 +20,19 @@ description = "Install dependencies"
 sources = ["requirements.txt"]
 depends = ["install-pip-tools"]
 
-[tasks.install-pip-tools]
-run = "pip install pip-tools"
-
-[tasks.dev]
-run = "python manage.py runserver"
-description = "Run the development server"
-
-[tasks.migrate]
-run = "python manage.py migrate"
-description = "Apply database migrations"
-depends = ["docker-dev"]
+[tasks.install-pre-commit]
+run = "pre-commit install"
+description = "Install pre-commit git hooks"
+sources = [".pre-commit-config.yaml"]
 
 [tasks.docker-dev]
 run = "docker compose up -d --wait"
 description = "Run delopment server in docker"
 
-[tasks.install-pre-commit]
-run = "pre-commit install"
-description = "Install pre-commit git hooks"
-sources = [".pre-commit-config.yaml"]
+[tasks.migrate]
+run = "python manage.py migrate"
+description = "Apply database migrations"
+depends = ["docker-dev", "install-deps"]
 
 [tasks.load-fixtures]
 run = "python manage.py loaddata api/fixtures/*.yaml"
@@ -45,3 +41,7 @@ depends = ["migrate"]
 [tasks.setup-dev]
 description = "Setup development environment"
 depends = ["install-deps", "install-pre-commit", "migrate", "load-fixtures"]
+
+[tasks.dev]
+run = "python manage.py runserver"
+description = "Run the development server"
