@@ -29,6 +29,7 @@ dependencies = [
     "pgvector",
     "auto_dataclass",
     "gunicorn==22.0.0",
+    "django-cors-headers==4.3.1",
 ]
 name = "ylo-igbn"
 version = "0.0.1"

@@ -7,7 +7,9 @@
 --extra-index-url https://download.pytorch.org/whl/cu118
 
 asgiref==3.8.1
-    # via django
+    # via
+    #   django
+    #   django-cors-headers
 attrs==23.2.0
     # via
     #   jsonschema
@@ -36,12 +38,15 @@ distlib==0.3.8
     # via virtualenv
 django==5.0.6
     # via
+    #   django-cors-headers
     #   django-debug-toolbar
     #   django-extensions
     #   django-unfold
     #   djangorestframework
     #   drf-spectacular
     #   ylo-igbn (pyproject.toml)
+django-cors-headers==4.3.1
+    # via ylo-igbn (pyproject.toml)
 django-debug-toolbar==4.3.0
     # via ylo-igbn (pyproject.toml)
 django-environ==0.11.2
