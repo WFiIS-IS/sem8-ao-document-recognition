@@ -308,7 +308,7 @@ numpy==1.26.4
     #   contourpy
     #   face-recognition
     #   matplotlib
-    #   opencv-python
+    #   opencv-python-headless
     #   pandas
     #   pgvector
     #   scipy
@@ -339,7 +339,7 @@ nvidia-nccl-cu11==2.20.5
     # via torch
 nvidia-nvtx-cu11==11.8.86
     # via torch
-opencv-python==4.9.0.80
+opencv-python-headless==4.10.0.82
     # via
     #   -c requirements.txt
     #   ylo-igbn (pyproject.toml)
@@ -390,14 +390,10 @@ prompt-toolkit==3.0.47
     # via ipython
 psutil==5.9.8
     # via ipykernel
-psycopg[binary]==3.1.19
+psycopg==3.1.19
     # via
     #   -c requirements.txt
     #   ylo-igbn (pyproject.toml)
-psycopg-binary==3.1.19
-    # via
-    #   -c requirements.txt
-    #   psycopg
 ptyprocess==0.7.0
     # via
     #   pexpect
@@ -413,16 +409,11 @@ pygments==2.18.0
 pyparsing==3.1.2
     # via matplotlib
 pyside6==6.7.1
-    # via
-    #   -c requirements.txt
-    #   ylo-igbn (pyproject.toml)
+    # via ylo-igbn (pyproject.toml)
 pyside6-addons==6.7.1
-    # via
-    #   -c requirements.txt
-    #   pyside6
+    # via pyside6
 pyside6-essentials==6.7.1
     # via
-    #   -c requirements.txt
     #   pyside6
     #   pyside6-addons
 python-dateutil==2.9.0.post0
@@ -493,7 +484,6 @@ send2trash==1.8.3
     # via jupyter-server
 shiboken6==6.7.1
     # via
-    #   -c requirements.txt
     #   pyside6
     #   pyside6-addons
     #   pyside6-essentials

@@ -59,6 +59,7 @@ services:
           *aws-environment,
           *azure-environment,
         ]
+      DB_HOST: ${DB_HOST:-database}
     volumes:
       - media-files:/home/document-recognition/app/media
     depends_on:

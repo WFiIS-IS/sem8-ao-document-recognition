@@ -95,11 +95,11 @@ nodeenv==1.9.1
 numpy==1.26.4
     # via
     #   face-recognition
-    #   opencv-python
+    #   opencv-python-headless
     #   pandas
     #   pgvector
     #   ylo-igbn (pyproject.toml)
-opencv-python==4.9.0.80
+opencv-python-headless==4.10.0.82
     # via ylo-igbn (pyproject.toml)
 packaging==24.0
     # via gunicorn
@@ -113,18 +113,8 @@ platformdirs==4.2.2
     # via virtualenv
 pre-commit==3.7.1
     # via ylo-igbn (pyproject.toml)
-psycopg[binary]==3.1.19
+psycopg==3.1.19
     # via ylo-igbn (pyproject.toml)
-psycopg-binary==3.1.19
-    # via psycopg
-pyside6==6.7.1
-    # via ylo-igbn (pyproject.toml)
-pyside6-addons==6.7.1
-    # via pyside6
-pyside6-essentials==6.7.1
-    # via
-    #   pyside6
-    #   pyside6-addons
 python-dateutil==2.9.0.post0
     # via
     #   botocore
@@ -152,11 +142,6 @@ ruff==0.3.7
     # via ylo-igbn (pyproject.toml)
 s3transfer==0.10.1
     # via boto3
-shiboken6==6.7.1
-    # via
-    #   pyside6
-    #   pyside6-addons
-    #   pyside6-essentials
 six==1.16.0
     # via
     #   azure-core

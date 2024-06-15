@@ -9,10 +9,9 @@ dependencies = [
     "numpy",
     "pandas",
     "face_recognition",
-    "opencv-python",
+    "opencv-python-headless",
     "boto3",
     "azure-ai-documentintelligence==1.0.0b2",
-    "PySide6",
     "python-dotenv",
     "Django~=5.0.3",
     "djangorestframework~=3.15.1",
@@ -25,7 +24,7 @@ dependencies = [
     "ruff==0.3.7",
     "isort==5.13.2",
     "django-upgrade==1.16.0",
-    "psycopg[binary]~=3.1.18",
+    "psycopg~=3.1.18",
     "django-unfold==0.26.0",
     "pgvector",
     "auto_dataclass",
@@ -42,6 +41,7 @@ ml = [
     "notebook",
     "matplotlib",
     "scipy",
+    "PySide6",
 ]
 [tool.pip-tools]
 extra-index-url = ["https://download.pytorch.org/whl/cu118"]
