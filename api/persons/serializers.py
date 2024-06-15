@@ -37,6 +37,18 @@ class ImageUploadSerializer(serializers.Serializer):
     image = serializers.ImageField(allow_empty_file=False, use_url=False)
 
 
+class PersonLookupSerializer(serializers.Serializer):
+    face_vector = serializers.ListField(
+        child=serializers.FloatField(),
+        allow_empty=False,
+        min_length=128,
+        max_length=128,
+        write_only=True,
+        required=True,
+        allow_null=False,
+    )
+
+
 class DocumentAnalyzeSerializer(serializers.Serializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
