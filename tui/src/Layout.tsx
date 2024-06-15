@@ -1,4 +1,4 @@
-import { useAuth } from 'oidc-react';
+
 import { cloneElement, useEffect, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { Calendar, CircleUser } from 'lucide-react';
@@ -16,21 +16,9 @@ import { env } from '$env';
 import { pathToTitleArray, pathToTitleMap } from '@/routes.tsx';
 import { cn } from '@/lib/utils.ts';
 import { Toaster } from '@/components/ui/toaster.tsx';
-import { ActivityPlayButton } from '@/shared/components/ActivityPlayButton.tsx';
-import { useUser } from '@/api/apollo/hooks/useUser.ts';
 
 export function Layout() {
-  const [authenticated, setIsAuthenticated] = useState(false);
-  const auth = useAuth();
   const location = useLocation();
-
-  const { data: user } = useUser();
-
-  useEffect(() => {
-    if (auth.userData?.access_token && user) setIsAuthenticated(true);
-  }, [auth.userData?.access_token, user]);
-
-  if (!authenticated) return <div className="relative flex h-screen flex-col"></div>;
 
   return (
     <>
@@ -83,7 +71,6 @@ export function Layout() {
                 </h1>
               </div>
             </div>
-            <ActivityPlayButton />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="secondary" size="icon" className="rounded-full">
@@ -92,14 +79,9 @@ export function Layout() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>{auth.userData?.profile?.nickname}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
                 <DropdownMenuItem disabled={true}>Settings</DropdownMenuItem>
-                <DropdownMenuItem disabled={true}>Support</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Link to="/logout">Logout</Link>
-                </DropdownMenuItem>
+                <DropdownMenuItem disabled={true}>Support</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </header>
