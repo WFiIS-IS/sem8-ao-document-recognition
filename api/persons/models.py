@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from pgvector.django import VectorField
 
@@ -14,7 +16,7 @@ class Person(models.Model):
 
 
 class FaceVector(models.Model):
-    uuid = models.UUIDField(primary_key=True, editable=False)
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="face_vectors")
     face_vector = VectorField(dimensions=1)
     created_at = models.DateTimeField(auto_now_add=True)

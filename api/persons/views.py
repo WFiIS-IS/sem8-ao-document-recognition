@@ -4,19 +4,19 @@ from rest_framework.response import Response
 
 from api.persons.models import Person
 from api.persons.serializers import (
-    APersonSerializer,
+    DocumentAnalyzeSerializer,
     ImageUploadSerializer,
     PersonSerializer,
 )
 from api.persons.services.recognition_service import RecognitionService
 
 
-class PersonListApiView(generics.ListAPIView):
+class PersonListApiView(generics.ListCreateAPIView):
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
 
 
-class PersonCreateApiView(generics.CreateAPIView):
+class DocumentAnalyzeApiView(generics.CreateAPIView):
     throttle_classes = ()
     permission_classes = ()
     parser_classes = (MultiPartParser,)
@@ -33,7 +33,7 @@ class PersonCreateApiView(generics.CreateAPIView):
         person = RecognitionService.read_document(image_bytes)
 
         if person:
-            serializer = APersonSerializer(person)
+            serializer = DocumentAnalyzeSerializer(person)
             response_data = serializer.data
 
             return Response(response_data, status=status.HTTP_201_CREATED)

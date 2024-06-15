@@ -17,7 +17,7 @@ class Person:
 
     first_name: str
     last_name: str
-    personal_number: str
+    pesel: str
     face_vector: list = None  # 128 item face vector
 
 
@@ -34,7 +34,7 @@ class RecognitionService:
             person = RecognitionService.__read_document_data_aws(image)
 
         if person is None:
-            person = Person(first_name=None, last_name=None, personal_number=None)
+            person = Person(first_name=None, last_name=None, pesel=None)
 
         person.face_vector = face_vector
 
@@ -118,7 +118,7 @@ class RecognitionService:
             if len(answers) == 2:
                 first_name, last_name = answers[0].split()
                 personal_number = answers[1][-11:]
-                return Person(first_name=first_name, last_name=last_name, personal_number=personal_number)
+                return Person(first_name=first_name, last_name=last_name, pesel=personal_number)
         except Exception:
             return None
 
@@ -167,13 +167,13 @@ class RecognitionService:
                         personal_number = doc.fields["DocumentNumber"].content
                         first_name = doc.fields["FirstName"].content
                         last_name = doc.fields["LastName"].content
-                        return Person(first_name=first_name, last_name=last_name, personal_number=personal_number[-11:])
+                        return Person(first_name=first_name, last_name=last_name, pesel=personal_number[-11:])
                     case "idDocument.driverLicense":
                         # date_of_birth = datetime.strptime(doc.fields["DateOfBirth"].content, "%d.%m.%Y").date()
                         personal_number = doc.fields["PersonalNumber"].content
                         first_name = doc.fields["FirstName"].content
                         last_name = doc.fields["LastName"].content
-                        return Person(first_name=first_name, last_name=last_name, personal_number=personal_number[-11:])
+                        return Person(first_name=first_name, last_name=last_name, pesel=personal_number[-11:])
                     case "idDocument":
                         pass
         except Exception:
@@ -181,13 +181,13 @@ class RecognitionService:
 
     @staticmethod
     def __get_face(image: bytes):
-        """Get faces from the image
+        """Get face from the image
 
         Args:
             image (bytes): image data
 
         Returns:
-            list: list of faces
+            face vector of length 128
         """
         image = RecognitionService.__bytes2cv2(image)
 
