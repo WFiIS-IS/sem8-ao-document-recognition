@@ -1,9 +1,6 @@
 import { Card, CardHeader, CardTitle } from '@/components/ui/card.tsx';
 import { DataTable } from '../shared/components/table/data-table';
-import { Button } from '@/components/ui/button';
-// import { data, columns } from '../path/to/your/dataAndColumns';
-import { useTable } from '@tanstack/react-table';
-import { SearchBar } from '../shared/components/search-bar';
+import { SearchBar } from '../shared/components/SearchBar';
 import { DotsVerticalIcon } from '@radix-ui/react-icons'; // Assuming you have an icon like this
 import {
   DropdownMenu,
@@ -43,42 +40,40 @@ const columns = [
   {
     accessorKey: 'id',
     header: 'ID',
-    cell: (info) => info.getValue()
+    cell: (info: any) => info.getValue()
   },
   {
     accessorKey: 'firstName',
     header: 'First Name',
-    cell: (info) => info.getValue()
+    cell: (info: any) => info.getValue()
   },
   {
     accessorKey: 'lastName',
     header: 'Last Name',
-    cell: (info) => info.getValue()
+    cell: (info: any) => info.getValue()
   },
   {
     accessorKey: 'gender',
     header: 'Gender',
-    cell: (info) => info.getValue()
+    cell: (info: any) => info.getValue()
   },
   {
     accessorKey: 'pesel',
     header: 'PESEL',
-    cell: (info) => info.getValue()
+    cell: (info: any) => info.getValue()
   },
   {
     accessorKey: 'dateOfBirth',
     header: 'Date of Birth',
-    cell: (info) => info.getValue()
+    cell: (info: any) => info.getValue()
   },
   {
     id: 'actions',
     header: 'Actions',
-    cell: ({ row }) => (
+    cell: ({ row }: any) => (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="icon" aria-label="Options">
-            <DotsVerticalIcon />
-          </Button>
+          <DotsVerticalIcon />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem onSelect={() => console.log('Action 1', row.original)}>
@@ -96,7 +91,7 @@ export function Dashboard() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex max-w-full flex-wrap gap-4">
-        <SearchBar />
+        <SearchBar onSearch={() => {}} />
         <Card className="flex max-w-[40rem] flex-grow flex-col gap-8">
           <CardHeader className="pb-2">
             <CardTitle className="text-xl">Documents</CardTitle>

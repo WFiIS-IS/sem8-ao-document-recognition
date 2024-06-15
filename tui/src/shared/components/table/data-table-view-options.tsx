@@ -9,7 +9,7 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
+  DropdownMenuSeparator
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 
@@ -38,8 +38,7 @@ export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps
                 key={column.id}
                 className={cn(!column.columnDef.meta?.label && 'capitalize')}
                 checked={column.getIsVisible()}
-                onCheckedChange={(value) => column.toggleVisibility(!!value)}
-              >
+                onCheckedChange={(value) => column.toggleVisibility(!!value)}>
                 {column.columnDef.meta?.label ?? column.id}
               </DropdownMenuCheckboxItem>
             );

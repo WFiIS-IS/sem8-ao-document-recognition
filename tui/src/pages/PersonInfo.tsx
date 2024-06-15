@@ -9,12 +9,10 @@ export function PersonInfo() {
   const params = useParams();
   console.log(params);
 
-  const [person, setPerson] = useState<Person>({
+  const [person, _setPerson] = useState<Person>({
     first_name: 'John',
     last_name: 'Doe',
-    pesel: '01240205770',
-    date_of_birth: new Date('02-05-2001'),
-    sex: 'Male'
+    pesel: '01240205770'
   });
 
   return (
@@ -28,9 +26,6 @@ export function PersonInfo() {
             <Label className="font-bold">First Name:</Label> {person.first_name}
             <Label className="font-bold">Last Name:</Label> {person.last_name}
             <Label className="font-bold">PESEL:</Label> {person.pesel}
-            <Label className="font-bold">Date of birth:</Label>{' '}
-            {person.date_of_birth.toLocaleDateString()}
-            <Label className="font-bold">Sex:</Label> {person.sex}
           </CardContent>
           <CardFooter>
             <Button onClick={() => {}}>EDIT</Button>

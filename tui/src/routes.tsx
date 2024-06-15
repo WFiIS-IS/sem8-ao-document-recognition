@@ -1,6 +1,4 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-
-import { env } from '$env';
 import { Error } from './shared/components/error/Error';
 import { Layout } from '@/Layout.tsx';
 import { Home, UserRoundPlus } from 'lucide-react';
@@ -42,12 +40,12 @@ export const router = createBrowserRouter(
             {
               path: '/add_person',
               lazy: () =>
-                import('./pages/AddPerson').then((module) => ({Component: module.AddPerson}))
+                import('./pages/AddPerson').then((module) => ({ Component: module.AddPerson }))
             },
             {
               path: '/person/:id',
               lazy: () =>
-                import('./pages/PersonInfo').then((module) => ({Component: module.PersonInfo}))
+                import('./pages/PersonInfo').then((module) => ({ Component: module.PersonInfo }))
             }
           ]
         },
@@ -58,5 +56,5 @@ export const router = createBrowserRouter(
       ]
     }
   ],
-  { basename: env.PUBLIC_APP_PREFIX }
+  { basename: '/' }
 );

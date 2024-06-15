@@ -4,7 +4,7 @@ import { PersonForm } from '@/shared/PersonForm';
 import { useState } from 'react';
 
 export function AddPerson() {
-  const [file, setFile] = useState<File | null>(null);
+  const [_file, setFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
