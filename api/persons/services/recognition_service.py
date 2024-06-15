@@ -172,3 +172,19 @@ class RecognitionService:
                         pass
         except Exception:
             return None
+
+    @staticmethod
+    def __get_faces(image: bytes) -> list:
+        """Get faces from the image
+
+        Args:
+            image (bytes): image data
+
+        Returns:
+            list: list of faces
+        """
+        client = boto3.client("rekognition", region_name="eu-west-1")
+
+        response = client.detect_faces(Image={"Bytes": image})
+
+        return response["FaceDetails"]
