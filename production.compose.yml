@@ -7,8 +7,7 @@ x-pg-db-credentials: &pg-db-credentials
 
 x-django-environment: &django-environment
   SECRET_KEY: ${DJANGO_SECRET:-"django-insecure-&#w*b7*0v3z4z62l989)sjk6wqdj_%v-)ty(7iakr+nw9&4i(%"}
-  EMAIL_BACKEND: ${EMAIL_BACKEND}
-  DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE:-devicemanager.settings_prod}
+  DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE:-api.settings_prod}
   HTTPS: on
 
 x-aws-environment: &aws-environment

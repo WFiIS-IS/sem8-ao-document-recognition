@@ -11,7 +11,7 @@ RUN pip install --no-cache-dir -r /requirements.txt
 RUN rm /requirements.txt
 
 FROM python_base AS builder
-ENV DJANGO_SETTINGS_MODULE=api.settings
+ENV DJANGO_SETTINGS_MODULE=api.settings_prod
 ENV DEBUG 0
 WORKDIR /app
 COPY . /app
@@ -28,7 +28,7 @@ FROM python_base AS application-server
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV DEBUG 0
-ENV DJANGO_SETTINGS_MODULE=api.settings
+ENV DJANGO_SETTINGS_MODULE=api.settings_prod
 RUN addgroup --system --gid 1001 document-recognition
 RUN adduser --system --uid 1001 document-recognition
 USER document-recognition
