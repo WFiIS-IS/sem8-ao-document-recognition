@@ -48,6 +48,7 @@ jobs:
           workspaces: './src-tauri -> target'
 
       - name: install frontend dependencies
+        working-directory: ./tui
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
         run: yarn install # change this to npm or pnpm depending on which one you use.
 
