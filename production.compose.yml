@@ -1,0 +1,75 @@
+name: document-recognition
+
+x-pg-db-credentials: &pg-db-credentials
+  POSTGRES_USER: ${DB_USER:-postgres}
+  POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+  POSTGRES_DB: ${DB_NAME:-document-recognition}
+
+x-django-environment: &django-environment
+  SECRET_KEY: ${DJANGO_SECRET:-"django-insecure-&#w*b7*0v3z4z62l989)sjk6wqdj_%v-)ty(7iakr+nw9&4i(%"}
+  EMAIL_BACKEND: ${EMAIL_BACKEND}
+  DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE:-devicemanager.settings_prod}
+  HTTPS: on
+
+x-aws-environment: &aws-environment
+  AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+  AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+
+x-azure-environment: &azure-environment
+  AZURE_VISION_ENDPOINT: ${AZURE_VISION_ENDPOINT}
+  AZURE_VISION_KEY: ${AZURE_VISION_KEY}
+
+x-application-port-mapping: &application-port-mapping
+  - ${API_PORT:-8000}:8000
+
+x-static-server-port-mapping: &static-server-port-mapping
+  - ${STATIC_PORT:-8080}:80
+
+services:
+   database:
+    image: tensorchord/pgvecto-rs:pg16-v0.0.0-nightly.20240525
+    container_name: document-recognition-dev-db
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    environment:
+      <<: *pg-db-credentials
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${DB_NAME:-document-recognition} -U $${DB_USER:-postgres}"]
+      interval: 3s
+      timeout: 5s
+      retries: 5
+
+  application-server:
+    image: document-recognition-application:0.0.1
+    container_name: application-server
+    pull_policy: build
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: application-server
+    ports: *application-port-mapping
+    environment:
+      <<:
+        [
+          *pg-db-credentials,
+          *django-environment,
+          *aws-environment,
+          *azure-environment
+        ]
+    volumes:
+      - media-files:/home/document-recognition/app/media
+    depends_on:
+      - database
+  static-server:
+    image: document-recognition-staticserver:0.0.1
+    container_name: staticfiles-server
+    pull_policy: build
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: static-server
+    ports: *static-server-port-mapping
+
+volumes:
+  pg-data:
+  media-files:

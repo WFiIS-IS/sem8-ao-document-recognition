@@ -161,7 +161,8 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-STATIC_ROOT = BASE_DIR / "static"
+MEDIA_ROOT = BASE_DIR / "build/media"
+STATIC_ROOT = BASE_DIR / "build/static"
 
 INTERNAL_IPS = [
     "127.0.0.1",

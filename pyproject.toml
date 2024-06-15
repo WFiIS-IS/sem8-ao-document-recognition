@@ -38,6 +38,7 @@ dependencies = [
     "django-unfold==0.26.0",
     "pgvector",
     "auto_dataclass",
+    "gunicorn==22.0.0",
 ]
 [tool.pip-tools]
 extra-index-url = ["https://download.pytorch.org/whl/cu118"]

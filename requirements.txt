@@ -115,6 +115,8 @@ fqdn==1.5.1
     # via jsonschema
 fsspec==2024.5.0
     # via torch
+gunicorn==22.0.0
+    # via ylo-igbn (pyproject.toml)
 h11==0.14.0
     # via httpcore
 httpcore==1.0.5
@@ -281,6 +283,7 @@ overrides==7.7.0
     # via jupyter-server
 packaging==24.0
     # via
+    #   gunicorn
     #   ipykernel
     #   jupyter-server
     #   jupyterlab
