@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle } from '@/components/ui/card.tsx';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.tsx';
 import { DataTable } from '../shared/components/table/data-table';
 import { SearchBar } from '../shared/components/SearchBar';
 import { DotsVerticalIcon } from '@radix-ui/react-icons'; // Assuming you have an icon like this
@@ -8,40 +8,10 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent
 } from '@/components/ui/dropdown-menu';
-
-const mockData = [
-  {
-    id: 1,
-    firstName: 'John',
-    lastName: 'Doe',
-    gender: 'M',
-    pesel: '99010112345',
-    dateOfBirth: '1999-01-01'
-  },
-  {
-    id: 2,
-    firstName: 'Jane',
-    lastName: 'Doe',
-    gender: 'F',
-    pesel: '95020223456',
-    dateOfBirth: '1995-02-02'
-  },
-  {
-    id: 3,
-    firstName: 'Jim',
-    lastName: 'Beam',
-    gender: 'M',
-    pesel: '92030334567',
-    dateOfBirth: '1992-03-03'
-  }
-];
+import { usePersonsQuery } from '@/api/query/hooks/usePersonsQuery';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const columns = [
-  {
-    accessorKey: 'id',
-    header: 'ID',
-    cell: (info: any) => info.getValue()
-  },
   {
     accessorKey: 'firstName',
     header: 'First Name',
@@ -52,21 +22,21 @@ const columns = [
     header: 'Last Name',
     cell: (info: any) => info.getValue()
   },
-  {
-    accessorKey: 'gender',
-    header: 'Gender',
-    cell: (info: any) => info.getValue()
-  },
+  // {
+  //   accessorKey: 'gender',
+  //   header: 'Gender',
+  //   cell: (info: any) => info.getValue()
+  // },
   {
     accessorKey: 'pesel',
     header: 'PESEL',
     cell: (info: any) => info.getValue()
   },
-  {
-    accessorKey: 'dateOfBirth',
-    header: 'Date of Birth',
-    cell: (info: any) => info.getValue()
-  },
+  // {
+  //   accessorKey: 'dateOfBirth',
+  //   header: 'Date of Birth',
+  //   cell: (info: any) => info.getValue()
+  // },
   {
     id: 'actions',
     header: 'Actions',
@@ -87,22 +57,38 @@ const columns = [
     )
   }
 ];
+
+function PersonTable(props: { data: any }) {
+  return (
+    <DataTable
+      data={props.data}
+      columns={columns}
+      className="your-custom-classname"
+      components={{}}
+      defaultSorting={[{ id: 'pesel', desc: false }]}
+    />
+  );
+}
+
 export function Dashboard() {
+  const { data, error } = usePersonsQuery();
+
+  if (error)
+    return <div className="text-destructive">Upps... Something went wrong: [{error.message}]</div>;
+
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex max-w-full flex-wrap gap-4">
+      <div className="flex max-w-full flex-col flex-wrap items-stretch gap-4">
         <SearchBar onSearch={() => {}} />
-        <Card className="flex max-w-[40rem] flex-grow flex-col gap-8">
+        <Card className="flex max-w-[60rem] flex-grow flex-col gap-8">
           <CardHeader className="pb-2">
             <CardTitle className="text-xl">Documents</CardTitle>
-            <DataTable
-              data={mockData}
-              columns={columns}
-              className="your-custom-classname"
-              components={{}}
-              defaultSorting={[{ id: 'id', desc: false }]}
-            />
           </CardHeader>
+          <CardContent>
+            {(data && <PersonTable data={data} />) || (
+              <Skeleton className="h-[20rem] w-full rounded-xl" />
+            )}
+          </CardContent>
         </Card>
       </div>
     </div>
