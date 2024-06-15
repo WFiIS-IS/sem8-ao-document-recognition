@@ -2,7 +2,7 @@ FROM python:3.12.2-slim-bookworm AS python_base
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update && apt install -y --no-install-recommends \
-    build-essential gdb lcov pkg-config \
+    build-essential gdb lcov pkg-config cmake \
     libbz2-dev libffi-dev libgdbm-dev libgdbm-compat-dev liblzma-dev \
     libncurses5-dev libreadline6-dev libsqlite3-dev libssl-dev \
     lzma lzma-dev tk-dev uuid-dev zlib1g-dev

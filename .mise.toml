@@ -17,11 +17,25 @@ sources = ["pyproject.toml"]
 outputs = ["requirements.txt"]
 depends = ["install-pip-tools"]
 
+[tasks.make-deps-ml]
+run = "pip-compile -v --extra ml -o requirements-ml.txt -c requirements.txt"
+description = "Update dev dependencies"
+depends = ["make-deps", "install-pip-tools"]
+sources = ["pyproject.toml"]
+outputs = ["requirements-ml.txt"]
+
 [tasks.install-deps]
 run = "pip-sync requirements.txt"
 description = "Install dependencies"
 sources = ["requirements.txt"]
 depends = ["install-pip-tools"]
+
+[tasks.install-deps-ml]
+run = "pip-sync requirements-ml.txt"
+description = "Install dependencies"
+sources = ["requirements-ml.txt"]
+depends = ["install-pip-tools"]
+
 
 [tasks.install-pre-commit]
 run = "pre-commit install"
