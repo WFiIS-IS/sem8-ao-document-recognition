@@ -17,4 +17,3 @@ class APersonSerializer(serializers.Serializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
     personal_number = serializers.CharField()
-    date_of_birth = serializers.DateField()
