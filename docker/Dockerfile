@@ -8,6 +8,7 @@ RUN apt update && apt install -y --no-install-recommends \
     lzma lzma-dev tk-dev uuid-dev zlib1g-dev libpq-dev
 COPY requirements.txt /requirements.txt
 RUN pip install --no-cache-dir -r /requirements.txt
+RUN pip install "psycopg[c]"
 RUN rm /requirements.txt
 
 FROM python_base AS builder
