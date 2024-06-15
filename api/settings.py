@@ -58,7 +58,6 @@ INSTALLED_APPS = [
     "rest_framework",
     "drf_yasg",
     "api.utils",
-    "api.todo_api",
     "api.persons",
 ]
 

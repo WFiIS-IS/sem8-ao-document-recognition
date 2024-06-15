@@ -101,7 +101,7 @@ class RecognitionService:
         try:
             if len(answers) == 2:
                 first_name, last_name = answers[0].split()
-                personal_number = answers[1]
+                personal_number = answers[1][-11:]
                 return Person(first_name=first_name, last_name=last_name, personal_number=personal_number)
         except Exception:
             return None
@@ -151,17 +151,13 @@ class RecognitionService:
                         personal_number = doc.fields["DocumentNumber"].content
                         first_name = doc.fields["FirstName"].content
                         last_name = doc.fields["LastName"].content
-                        return Person(
-                            first_name=first_name,
-                            last_name=last_name,
-                            personal_number=personal_number,
-                        )
+                        return Person(first_name=first_name, last_name=last_name, personal_number=personal_number[-11:])
                     case "idDocument.driverLicense":
                         # date_of_birth = datetime.strptime(doc.fields["DateOfBirth"].content, "%d.%m.%Y").date()
                         personal_number = doc.fields["PersonalNumber"].content
                         first_name = doc.fields["FirstName"].content
                         last_name = doc.fields["LastName"].content
-                        return Person(first_name=first_name, last_name=last_name, personal_number=personal_number)
+                        return Person(first_name=first_name, last_name=last_name, personal_number=personal_number[-11:])
                     case "idDocument":
                         pass
         except Exception:
