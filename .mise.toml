@@ -1,5 +1,8 @@
 [tools]
 python = "3.12"
+yarn = "1.22"
+node = "20"
+rust = "latest"
 
 [env.'_'.python]
 venv = { path = ".venv", create = true }

@@ -1,14 +1,13 @@
 
-import { cloneElement, useEffect, useState } from 'react';
+import { cloneElement } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { Calendar, CircleUser } from 'lucide-react';
+import { Scroll, Settings,  } from 'lucide-react';
 import { Card, CardDescription, CardHeader } from '@/components/ui/card.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu.tsx';
@@ -27,8 +26,8 @@ export function Layout() {
           <div className="flex h-full max-h-screen flex-col gap-2">
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
               <Link to="/" className="flex items-center gap-2 font-semibold">
-                <Calendar className="h-6 w-6" />
-                <span className="">Chrono Dash</span>
+                <Scroll className="h-6 w-6" />
+                <span className="">{env.PUBLIC_APP_NAME}</span>
               </Link>
             </div>
             <div className="flex-1">
@@ -55,7 +54,7 @@ export function Layout() {
               <Card x-chunk="dashboard-02-chunk-0">
                 <CardHeader className="p-2 pt-0 md:p-4">
                   <CardDescription className="text-center">
-                    Chrono Dash. Version: {env.PUBLIC_VERSION}
+                    {env.PUBLIC_APP_NAME}: {env.PUBLIC_VERSION}
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -74,8 +73,8 @@ export function Layout() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="secondary" size="icon" className="rounded-full">
-                  <CircleUser className="h-5 w-5" />
-                  <span className="sr-only">Toggle user menu</span>
+                  <Settings className="h-5 w-5" />
+                  <span className="sr-only">Toggle settings</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
