@@ -33,7 +33,7 @@ import { useParams } from 'react-router-dom';
                 Personal Information
               </CardTitle>
             </CardHeader>
-            <CardContent className='grid grid-cols-2 gap-x-8'>
+            <CardContent className='grid grid-cols-2 gap-x-8 place-items-baseline'>
               <Label className='font-bold'>First Name:</Label> {person.first_name}
               <Label className='font-bold'>Last Name:</Label> {person.last_name}
               <Label className='font-bold'>PESEL:</Label> {person.pesel}
