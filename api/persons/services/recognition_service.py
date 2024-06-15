@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 import boto3
 import cv2
+import face_recognition
 import numpy as np
 from azure.ai.documentintelligence import DocumentIntelligenceClient
 from azure.ai.documentintelligence.models import AnalyzeDocumentRequest, AnalyzeResult
@@ -17,6 +18,7 @@ class Person:
     first_name: str
     last_name: str
     personal_number: str
+    face_vector: list = None  # 128 item face vector
 
 
 class RecognitionService:
@@ -24,10 +26,17 @@ class RecognitionService:
     def read_document(image: bytes) -> Person:
         image = RecognitionService.__trim_image(image)
 
+        face_vector = RecognitionService.__get_face(image)
+
         person = RecognitionService.__read_document_data_azure(image)
 
         if person is None:
             person = RecognitionService.__read_document_data_aws(image)
+
+        if person is None:
+            person = Person(first_name=None, last_name=None, personal_number=None)
+
+        person.face_vector = face_vector
 
         return person
 
@@ -43,9 +52,7 @@ class RecognitionService:
             bytes: trimmed image data
         """
 
-        im = np.asarray(bytearray(image), dtype="uint8")
-        im = cv2.imdecode(im, cv2.IMREAD_COLOR)
-
+        im = RecognitionService.__bytes2cv2(image)
         height, width, _ = im.shape
 
         if not (width > 1000 or height > 1000):
@@ -85,8 +92,7 @@ class RecognitionService:
             Person: human identification data
         """
 
-        image = np.asarray(bytearray(image), dtype="uint8")
-        image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+        image = RecognitionService.__bytes2cv2(image)
         height, _, _ = image.shape
         image = image[int(height * 0.3) :, :]
 
@@ -174,7 +180,7 @@ class RecognitionService:
             return None
 
     @staticmethod
-    def __get_faces(image: bytes) -> list:
+    def __get_face(image: bytes):
         """Get faces from the image
 
         Args:
@@ -183,8 +189,23 @@ class RecognitionService:
         Returns:
             list: list of faces
         """
-        client = boto3.client("rekognition", region_name="eu-west-1")
+        image = RecognitionService.__bytes2cv2(image)
 
-        response = client.detect_faces(Image={"Bytes": image})
+        face_encodings = face_recognition.face_encodings(image)
 
-        return response["FaceDetails"]
+        return face_encodings[0] if face_encodings else None
+
+    @staticmethod
+    def __bytes2cv2(image: bytes):
+        """Convert image bytes to cv2 image
+
+        Args:
+            image (bytes): image data
+
+        Returns:
+            cv2 image
+        """
+        image = np.asarray(bytearray(image), dtype="uint8")
+        image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+
+        return image

@@ -17,3 +17,4 @@ class APersonSerializer(serializers.Serializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
     personal_number = serializers.CharField()
+    face_vector = serializers.ListField(child=serializers.FloatField(), allow_empty=True)
