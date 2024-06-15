@@ -18,7 +18,7 @@
   },
   "productName": "tui",
   "version": "0.0.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "lol.wfis.document-recognition",
   "plugins": {},
   "app": {
     "security": {

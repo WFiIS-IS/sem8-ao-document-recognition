@@ -40,7 +40,8 @@ export function Layout() {
                       location.pathname === path
                         ? 'bg-muted text-foreground'
                         : 'text-muted-foreground'
-                    )}>
+                    )}
+                  >
                     {cloneElement(icon, {
                       className: cn(icon.props.className, 'h-4 w-4')
                     })}

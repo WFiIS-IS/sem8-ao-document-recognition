@@ -18,6 +18,6 @@ export function useTableState({ defaultSorting }: { defaultSorting?: SortingStat
     setRowSelection,
     setColumnVisibility,
     setColumnFilters,
-    setSorting,
+    setSorting
   } as const;
 }

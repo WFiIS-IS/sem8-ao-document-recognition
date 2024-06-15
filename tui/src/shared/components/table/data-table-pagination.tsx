@@ -6,7 +6,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   DoubleArrowLeftIcon,
-  DoubleArrowRightIcon,
+  DoubleArrowRightIcon
 } from '@radix-ui/react-icons';
 import type { Table } from '@tanstack/react-table';
 
@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
   SelectContent,
-  SelectItem,
+  SelectItem
 } from '@/components/ui/select';
 
 type DataTablePaginationProps<TableDataType> = {
@@ -26,7 +26,7 @@ type DataTablePaginationProps<TableDataType> = {
 
 export function DataTablePagination<TableDataType>({
   table,
-  SelectionActions = () => <></>,
+  SelectionActions = () => <></>
 }: DataTablePaginationProps<TableDataType>) {
   const selectedRows = table.getFilteredSelectedRowModel().rows;
   const allRows = table.getFilteredRowModel().rows;

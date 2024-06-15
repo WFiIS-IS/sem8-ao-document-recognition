@@ -7,7 +7,7 @@ export const env = createEnv({
   client: {
     PUBLIC_API_URL: z.string(),
     PUBLIC_VERSION: z.string(),
-    PUBLIC_APP_NAME: z.string(),
+    PUBLIC_APP_NAME: z.string()
   },
   runtimeEnv: import.meta.env
 });

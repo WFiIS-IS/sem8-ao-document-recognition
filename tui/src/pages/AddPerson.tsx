@@ -14,7 +14,7 @@ export function AddPerson() {
   //   first_name: 'Jane',
   //   last_name: 'Doe'
   // };
-  const [personData, setPersonData] = useState<Person | null>(null);
+  const [personData, _] = useState<Person | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {

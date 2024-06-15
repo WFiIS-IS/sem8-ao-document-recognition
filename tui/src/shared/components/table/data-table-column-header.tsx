@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuSeparator,
+  DropdownMenuSeparator
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 
@@ -20,7 +20,7 @@ type DataTableColumnHeaderProps<TData, TValue> = {
 export function DataTableColumHeader<TData, TValue>({
   column,
   title,
-  className,
+  className
 }: DataTableColumnHeaderProps<TData, TValue>) {
   if (!column.getCanSort()) {
     return <div className={cn(className)}>{title}</div>;

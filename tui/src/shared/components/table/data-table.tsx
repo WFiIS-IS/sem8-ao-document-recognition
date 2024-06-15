@@ -13,7 +13,7 @@ import {
   getFacetedUniqueValues,
   flexRender,
   type Table as TableType,
-  type SortingState,
+  type SortingState
 } from '@tanstack/react-table';
 
 import {
@@ -22,7 +22,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
+  TableRow
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
@@ -45,7 +45,7 @@ export function DataTable<TData, TValue>({
   data,
   className,
   components,
-  defaultSorting,
+  defaultSorting
 }: DataTableProps<TData, TValue>) {
   const {
     columnFilters,
@@ -55,7 +55,7 @@ export function DataTable<TData, TValue>({
     rowSelection,
     setRowSelection,
     sorting,
-    setSorting,
+    setSorting
   } = useTableState({ defaultSorting });
 
   const table = useReactTable({
@@ -72,7 +72,7 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
+    getFacetedUniqueValues: getFacetedUniqueValues()
   });
 
   const { ToolBar = () => <></> } = components ?? {};
