@@ -1,5 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { PersonForm } from '@/shared/PersonForm';
 import { useState } from 'react';
 
@@ -28,11 +30,14 @@ export function AddPerson() {
             <CardTitle className="text-xl">Add new Person</CardTitle>
           </CardHeader>
           <CardContent className="items-cetner flex flex-col gap-2">
-            <div>
-              <label htmlFor="file" className="sr-only">
-                Upload file
-              </label>
-              <input id="file" type="file" onChange={handleFileChange} />
+            <div className="flex flex-col space-y-2">
+              <Label htmlFor="documentFile">Fill Information from document</Label>
+              <Input
+                id="documentFile"
+                type="file"
+                onChange={handleFileChange}
+                className="max-w-max"
+              />
             </div>
             {imageUrl && (
               <div className="flex items-center justify-center">

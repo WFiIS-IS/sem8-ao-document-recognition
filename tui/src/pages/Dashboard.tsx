@@ -13,12 +13,12 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const columns = [
   {
-    accessorKey: 'firstName',
+    accessorKey: 'first_name',
     header: 'First Name',
     cell: (info: any) => info.getValue()
   },
   {
-    accessorKey: 'lastName',
+    accessorKey: 'last_name',
     header: 'Last Name',
     cell: (info: any) => info.getValue()
   },
@@ -82,7 +82,7 @@ export function Dashboard() {
         <SearchBar onSearch={() => {}} />
         <Card className="flex max-w-[60rem] flex-grow flex-col gap-8">
           <CardHeader className="pb-2">
-            <CardTitle className="text-xl">Documents</CardTitle>
+            <CardTitle className="text-xl">Persons</CardTitle>
           </CardHeader>
           <CardContent>
             {(data && <PersonTable data={data} />) || (
