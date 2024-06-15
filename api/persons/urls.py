@@ -6,5 +6,5 @@ app_name = "persons"
 
 urlpatterns = [
     path("", PersonListApiView.as_view()),
-    path("create", PersonCreateApiView.as_view()),
+    path("analyze-document", PersonCreateApiView.as_view()),
 ]
