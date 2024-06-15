@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Person } from '@/models/person';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PersonForm } from '@/shared/PersonForm';
@@ -8,6 +9,12 @@ import { useState } from 'react';
 export function AddPerson() {
   const [_file, setFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  // const per: Person = {
+  //   pesel: '123456789',
+  //   first_name: 'Jane',
+  //   last_name: 'Doe'
+  // };
+  const [personData, setPersonData] = useState<Person | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -40,12 +47,11 @@ export function AddPerson() {
               />
             </div>
             {imageUrl && (
-              <div className="flex items-center justify-center">
+              <div className="my-2 flex items-center justify-center">
                 <img src={imageUrl} alt="Uploaded" className="max-h-[70px]" />
               </div>
             )}
-
-            <PersonForm />
+            {personData && <PersonForm personData={personData} />}
           </CardContent>
           <CardFooter>
             <Button onClick={() => {}}>DONE</Button>
