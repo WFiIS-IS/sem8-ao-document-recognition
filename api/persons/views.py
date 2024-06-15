@@ -1,4 +1,4 @@
-from rest_framework import generics, status
+from rest_framework import generics, status, viewsets
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 
@@ -11,7 +11,7 @@ from api.persons.serializers import (
 from api.persons.services.recognition_service import RecognitionService
 
 
-class PersonListApiView(generics.ListCreateAPIView):
+class PersonView(viewsets.ModelViewSet):
     permission_classes = ()
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
