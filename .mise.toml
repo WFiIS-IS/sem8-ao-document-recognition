@@ -48,3 +48,6 @@ depends = ["install-deps", "install-pre-commit", "migrate", "load-fixtures"]
 [tasks.dev]
 run = "python manage.py runserver"
 description = "Run the development server"
+
+[tasks.dev-ui]
+run = "yarn tauri dev"
