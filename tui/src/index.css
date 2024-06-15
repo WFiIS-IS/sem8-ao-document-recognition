@@ -53,7 +53,7 @@
 @layer base {
   * {
     @apply border-border;
-    font-family: 'Roboto'
+    font-family: 'Roboto';
   }
   body {
     @apply bg-background text-foreground;

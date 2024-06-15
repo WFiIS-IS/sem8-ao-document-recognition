@@ -1,7 +1,6 @@
-
 import { cloneElement } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { Scroll, Settings,  } from 'lucide-react';
+import { Scroll, Settings } from 'lucide-react';
 import { Card, CardDescription, CardHeader } from '@/components/ui/card.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import {
@@ -64,9 +63,7 @@ export function Layout() {
         <div className="flex h-full max-h-screen flex-col">
           <header className="flex h-14 flex-shrink-0 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
             <div className="w-full flex-1">
-              <div className="flex items-center">
-                {env.PUBLIC_APP_NAME}
-              </div>
+              <div className="flex items-center">{env.PUBLIC_APP_NAME}</div>
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
