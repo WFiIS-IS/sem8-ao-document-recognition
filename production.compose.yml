@@ -26,7 +26,7 @@ x-static-server-port-mapping: &static-server-port-mapping
   - ${STATIC_PORT:-8080}:80
 
 services:
-   database:
+  database:
     image: tensorchord/pgvecto-rs:pg16-v0.0.0-nightly.20240525
     container_name: document-recognition-dev-db
     volumes:
@@ -34,7 +34,11 @@ services:
     environment:
       <<: *pg-db-credentials
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -d $${DB_NAME:-document-recognition} -U $${DB_USER:-postgres}"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -d $${DB_NAME:-document-recognition} -U $${DB_USER:-postgres}",
+        ]
       interval: 3s
       timeout: 5s
       retries: 5
@@ -54,7 +58,7 @@ services:
           *pg-db-credentials,
           *django-environment,
           *aws-environment,
-          *azure-environment
+          *azure-environment,
         ]
     volumes:
       - media-files:/home/document-recognition/app/media

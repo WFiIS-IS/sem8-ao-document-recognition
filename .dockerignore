@@ -1,0 +1,15 @@
+.venv
+.ruff_cache
+ui
+tui
+db
+personal
+my-data
+document-generation
+__pycache__
+.vscode
+
+**/.env
+
+personal/**
+!personal/.gitkeep
