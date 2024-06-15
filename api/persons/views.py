@@ -12,6 +12,7 @@ from api.persons.services.recognition_service import RecognitionService
 
 
 class PersonListApiView(generics.ListCreateAPIView):
+    permission_classes = ()
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
 

@@ -14,7 +14,13 @@ class FaceVectorSerializer(serializers.ModelSerializer):
 
 class PersonSerializer(serializers.ModelSerializer):
     face_vector = serializers.ListField(
-        child=serializers.FloatField(), allow_empty=True, min_length=128, max_length=128, write_only=True
+        child=serializers.FloatField(),
+        allow_empty=True,
+        min_length=128,
+        max_length=128,
+        write_only=True,
+        required=False,
+        allow_null=True,
     )
 
     class Meta:
@@ -24,7 +30,10 @@ class PersonSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         fv = validated_data.pop("face_vector")
         person = Person.objects.create(**validated_data)
-        fv = FaceVector.objects.create(person=person, face_vector=fv)
+
+        if fv:
+            print("ollala", fv)
+            fv = FaceVector.objects.create(person=person, face_vector=fv)
 
         return person
 
