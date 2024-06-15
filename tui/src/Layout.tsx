@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu.tsx';
 import { env } from '$env';
-import { pathToTitleArray, pathToTitleMap } from '@/routes.tsx';
+import { pathToTitleArray } from '@/routes.tsx';
 import { cn } from '@/lib/utils.ts';
 import { Toaster } from '@/components/ui/toaster.tsx';
 
@@ -65,9 +65,7 @@ export function Layout() {
           <header className="flex h-14 flex-shrink-0 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
             <div className="w-full flex-1">
               <div className="flex items-center">
-                <h1 className="font-semibold md:text-xl">
-                  {pathToTitleMap.get(location.pathname) || location.pathname}
-                </h1>
+                {env.PUBLIC_APP_NAME}
               </div>
             </div>
             <DropdownMenu>

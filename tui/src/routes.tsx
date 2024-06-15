@@ -5,13 +5,6 @@ import { Error } from './shared/components/error/Error';
 import { Layout } from '@/Layout.tsx';
 import { Home } from 'lucide-react';
 
-export const pathToTitleMap: Map<string, string> = new Map([
-  ['/', 'Dashboard'],
-  ['/activities', 'Activities'],
-  ['/projects', 'Projects'],
-  ['/customers', 'Customers']
-]);
-
 // use the same as above but as array of elements
 
 export const pathToTitleArray = [
@@ -41,6 +34,11 @@ export const router = createBrowserRouter(
               lazy: () =>
                 import('./pages/Dashboard').then((module) => ({ Component: module.Dashboard }))
             },
+            {
+              path: '/person/:id',
+              lazy: () =>
+                import('./pages/PersonInfo').then((module) => ({Component: module.PersonInfo}))
+            }
           ]
         },
         {
