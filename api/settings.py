@@ -56,7 +56,6 @@ INSTALLED_APPS = [
     "django_extensions",
     "debug_toolbar",
     "rest_framework",
-    "drf_yasg",
     "api.utils",
     "api.persons",
 ]

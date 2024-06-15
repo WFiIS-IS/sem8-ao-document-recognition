@@ -33,6 +33,16 @@ class RecognitionService:
 
     @staticmethod
     def __trim_image(image: bytes) -> bytes:
+        """
+        Trim image if one of the image dimensions is greater than 1000px
+
+        Args:
+            image (bytes): image data
+
+        Returns:
+            bytes: trimmed image data
+        """
+
         im = np.asarray(bytearray(image), dtype="uint8")
         im = cv2.imdecode(im, cv2.IMREAD_COLOR)
 
