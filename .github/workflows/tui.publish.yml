@@ -35,7 +35,7 @@ jobs:
         with:
           node-version: lts/*
           cache: 'yarn' # Set this to npm, yarn or pnpm.
-          cache-dependency-path: './tui/yarn.lock'
+          cache-dependency-path: './tui/**'
 
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
@@ -56,6 +56,12 @@ jobs:
       - name: build frontend
         working-directory: ./tui
         run: yarn tauri build # change this to npm or pnpm depending on
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: TUI
+          path: ./tui/src-tauri/target/release/bundle/nsis/ # Adjust path to your executable
 
       # - uses: tauri-apps/tauri-action@v0
       #   env:
