@@ -2,8 +2,8 @@ name: 'publish'
 
 on:
   push:
-    branches:
-      - feature/fix-workflow
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
   publish-tauri:
@@ -15,8 +15,8 @@ jobs:
         settings:
           - platform: 'ubuntu-22.04'
             args: ''
-          # - platform: 'windows-latest'
-          #   args: ''
+          - platform: 'windows-latest'
+            args: ''
 
     runs-on: ${{ matrix.settings.platform }}
     steps:
@@ -105,9 +105,7 @@ jobs:
           for asset in ./artifacts/**/*; do
             assets+=("$asset")
           done
-          tag_name="${GITHUB_REF##*/}"
-          echo $tag_name
-          tag_name="v0.0.1"
+          tag_name=${{ github.ref }}
           gh release create "$tag_name" "${assets[@]}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
