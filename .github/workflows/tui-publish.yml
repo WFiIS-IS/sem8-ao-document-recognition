@@ -26,7 +26,7 @@ jobs:
         working-directory: ./tui
         run: |
           echo "PUBLIC_API_URL=${{ secrets.PUBLIC_API_URL }}" >> .env
-          echo "PUBLIC_VERSION=${{ github.ref }}" >> .env
+          echo "PUBLIC_VERSION=${GITHUB_REF##*/}" >> .env
           echo "PUBLIC_APP_NAME=Tui Documents" >> .env
 
       - name: install dependencies (ubuntu only)
@@ -69,10 +69,10 @@ jobs:
         with:
           name: TUI
           path: |
-            ./tui/src-tauri/target/release/bundle/nsis/tui_*.exe
-            ./tui/src-tauri/target/release/bundle/msi/tui_*.msi
-            ./tui/src-tauri/target/release/bundle/deb/tui_*.deb
-            ./tui/src-tauri/target/release/bundle/rpm/tui_*.rpm
+            ./tui/src-tauri/target/release/bundle/nsis/tui*.exe
+            ./tui/src-tauri/target/release/bundle/msi/tui*.msi
+            ./tui/src-tauri/target/release/bundle/deb/tui*.deb
+            ./tui/src-tauri/target/release/bundle/rpm/tui*.rpm
 
   release:
     runs-on: ubuntu-latest
@@ -94,7 +94,7 @@ jobs:
           for asset in ./artifacts/**/*; do
             assets+=("$asset")
           done
-          tag_name="${GITHUB_REF##*/}"
+          tag_name="${{ github.ref }}"
           gh release create "$tag_name" "${assets[@]}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
