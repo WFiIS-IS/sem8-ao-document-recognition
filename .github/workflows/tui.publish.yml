@@ -94,8 +94,9 @@ jobs:
         with:
           name: TUI
           path: ./dist
-
+      
       - name: Create Release
+        uses: actions/checkout@v2
         run: |
           set -x
           assets=()
