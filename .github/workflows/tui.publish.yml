@@ -89,20 +89,20 @@ jobs:
     runs-on: ubuntu-latest
     needs: publish-tauri
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
           name: TUI
-          path: ./dist
-      
-      - name: Checkout code
-        uses: actions/checkout@v2
+          path: ./artifacts
       
       - name: Create Release
         run: |
           set -x
           assets=()
-          for asset in ./dist/*; do
+          for asset in ./artifacts/*; do
             assets+=("$asset")
           done
           tag_name="${GITHUB_REF##*/}"
