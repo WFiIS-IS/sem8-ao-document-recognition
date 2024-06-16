@@ -1,21 +1,14 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Person } from '@/models/person';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { PersonForm } from '@/shared/components/PersonForm';
+import { PersonForm, personFormSchema } from '@/shared/components/PersonForm';
 import { useState } from 'react';
-import { PersonDTO } from '@/api/dto/person-dto';
 import { z } from 'zod';
 
 export function AddPerson() {
   const [_file, setFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  // const per: Person = {
-  //   pesel: '123456789',
-  //   first_name: 'Jane',
-  //   last_name: 'Doe'
-  // };
   const [personData, _] = useState<Person | undefined>();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,7 +49,7 @@ export function AddPerson() {
             <PersonForm
               personData={personData}
               buttonText="DONE"
-              onSubmit={(values: z.infer<typeof PersonDTO>) => {
+              onSubmit={(values: z.infer<typeof personFormSchema>) => {
                 console.log(values);
               }}
             />

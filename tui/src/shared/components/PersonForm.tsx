@@ -117,6 +117,16 @@ export function PersonForm(props: PersonFormProps) {
                     selected={field.value || undefined}
                     onSelect={field.onChange}
                     initialFocus
+                    captionLayout="dropdown"
+                    fromYear={1900}
+                    toYear={2050}
+                    classNames={{
+                      dropdown_month: '[&>div]:hidden',
+                      dropdown_year: '[&>div]:hidden',
+                      caption_dropdowns: 'grid grid-cols-2',
+                      vhidden: 'col-span-2',
+                      dropdown: 'rounded-[var(--radius)] focus:bg-accent [&>option]:bg-primary'
+                    }}
                   />
                 </PopoverContent>
               </Popover>
