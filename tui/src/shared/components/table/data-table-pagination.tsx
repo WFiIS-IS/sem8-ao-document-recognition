@@ -28,7 +28,6 @@ export function DataTablePagination<TableDataType>({
   table,
   SelectionActions = () => <></>
 }: DataTablePaginationProps<TableDataType>) {
-  const selectedRows = table.getFilteredSelectedRowModel().rows;
   const allRows = table.getFilteredRowModel().rows;
   const pageCount = table.getPageCount();
   const { pageSize, pageIndex } = table.getState().pagination;
@@ -36,9 +35,7 @@ export function DataTablePagination<TableDataType>({
   return (
     <div className="flex items-center justify-between p-4">
       <div className="flex flex-1 items-center justify-start gap-10">
-        <div className="text-sm text-muted-foreground">
-          {selectedRows.length} of {allRows.length} row(s) selected.
-        </div>
+        <div className="text-sm text-muted-foreground">{allRows.length} person(s) found.</div>
         <SelectionActions table={table} />
       </div>
       <div className="flex items-center space-x-6 lg:space-x-8">
@@ -46,8 +43,7 @@ export function DataTablePagination<TableDataType>({
           <p className="text-sm font-medium">Rows per page</p>
           <Select
             value={`${pageSize}`}
-            onValueChange={(value) => table.setPageSize(parseInt(value))}
-          >
+            onValueChange={(value) => table.setPageSize(parseInt(value))}>
             <SelectTrigger className="h-8 w-[70px]">
               <SelectValue placeholder={pageSize} />
             </SelectTrigger>
@@ -68,8 +64,7 @@ export function DataTablePagination<TableDataType>({
             variant="outline"
             className="hidden h-8 w-8 p-0 lg:flex"
             onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}
-          >
+            disabled={!table.getCanPreviousPage()}>
             <span className="sr-only">Go to first page</span>
             <DoubleArrowLeftIcon className="h-4 w-4" />
           </Button>
@@ -77,8 +72,7 @@ export function DataTablePagination<TableDataType>({
             variant="outline"
             className="h-8 w-8 p-0"
             onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
+            disabled={!table.getCanPreviousPage()}>
             <span className="sr-only">Go to previous page</span>
             <ChevronLeftIcon className="h-4 w-4" />
           </Button>
@@ -86,8 +80,7 @@ export function DataTablePagination<TableDataType>({
             variant="outline"
             className="h-8 w-8 p-0"
             onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
+            disabled={!table.getCanNextPage()}>
             <span className="sr-only">Go to next page</span>
             <ChevronRightIcon className="h-4 w-4" />
           </Button>
@@ -95,8 +88,7 @@ export function DataTablePagination<TableDataType>({
             variant="outline"
             className="hidden h-8 w-8 p-0 lg:flex"
             onClick={() => table.setPageIndex(pageCount - 1)}
-            disabled={!table.getCanNextPage()}
-          >
+            disabled={!table.getCanNextPage()}>
             <span className="sr-only">Go to last page</span>
             <DoubleArrowRightIcon className="h-4 w-4" />
           </Button>

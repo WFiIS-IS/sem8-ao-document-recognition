@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.tsx';
 import { DataTable } from '../shared/components/table/data-table';
-import { SearchBar } from '../shared/components/SearchBar';
-import { DotsVerticalIcon } from '@radix-ui/react-icons'; // Assuming you have an icon like this
+import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import {
   DropdownMenu,
   DropdownMenuItem,
@@ -10,27 +9,24 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { usePersonsQuery } from '@/api/query/hooks/usePersonsQuery';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Person } from '@/models/person.ts';
+import { ColumnDef } from '@tanstack/react-table';
 
-const columns = [
+const columns: ColumnDef<Person>[] = [
   {
     accessorKey: 'first_name',
     header: 'First Name',
-    cell: (info: any) => info.getValue()
+    cell: ({ row }) => row.original.first_name
   },
   {
     accessorKey: 'last_name',
     header: 'Last Name',
-    cell: (info: any) => info.getValue()
+    cell: ({ row }) => row.original.last_name
   },
-  // {
-  //   accessorKey: 'gender',
-  //   header: 'Gender',
-  //   cell: (info: any) => info.getValue()
-  // },
   {
     accessorKey: 'pesel',
     header: 'PESEL',
-    cell: (info: any) => info.getValue()
+    cell: ({ row }) => row.original.pesel
   },
   // {
   //   accessorKey: 'dateOfBirth',
@@ -39,32 +35,27 @@ const columns = [
   // },
   {
     id: 'actions',
-    header: 'Actions',
-    cell: ({ row }: any) => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <DotsVerticalIcon />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem onSelect={() => console.log('Action 1', row.original)}>
-            Edit
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => console.log('Action 2', row.original)}>
-            Delete
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+    cell: () => (
+      <div className="flex justify-end">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <DotsHorizontalIcon className="hover:cursor-pointer" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem className="hover:cursor-pointer">Edit</DropdownMenuItem>
+            <DropdownMenuItem className="hover:cursor-pointer">Delete</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     )
   }
 ];
 
-function PersonTable(props: { data: any }) {
+function PersonTable(props: { data: Person[] }) {
   return (
     <DataTable
       data={props.data}
       columns={columns}
-      className="your-custom-classname"
-      components={{}}
       defaultSorting={[{ id: 'pesel', desc: false }]}
     />
   );
@@ -73,14 +64,15 @@ function PersonTable(props: { data: any }) {
 export function Dashboard() {
   const { data, error } = usePersonsQuery();
 
+  console.log(data);
+
   if (error)
     return <div className="text-destructive">Upps... Something went wrong: [{error.message}]</div>;
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex max-w-full flex-col flex-wrap items-stretch gap-4">
-        <SearchBar onSearch={() => {}} />
-        <Card className="flex max-w-[60rem] flex-grow flex-col gap-8">
+        <Card className="flex flex-grow flex-col gap-8">
           <CardHeader className="pb-2">
             <CardTitle className="text-xl">Persons</CardTitle>
           </CardHeader>
