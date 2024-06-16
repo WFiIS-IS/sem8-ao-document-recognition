@@ -196,20 +196,28 @@ export function PersonForm(props: PersonFormProps) {
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
                     mode="single"
+                    captionLayout="dropdown"
                     selected={field.value}
                     onSelect={field.onChange}
-                    initialFocus
-                    captionLayout="dropdown"
                     fromYear={1900}
                     toYear={2050}
-                    classNames={{
-                      dropdown_month: '[&>div]:hidden',
-                      dropdown_year: '[&>div]:hidden',
-                      caption_dropdowns: 'grid grid-cols-2',
-                      vhidden: 'col-span-2',
-                      dropdown: 'rounded-[var(--radius)] focus:bg-accent [&>option]:bg-primary'
-                    }}
                   />
+                  {/*<Calendar*/}
+                  {/*  mode="single"*/}
+                  {/*  selected={field.value || undefined}*/}
+                  {/*  onSelect={field.onChange}*/}
+                  {/*  initialFocus*/}
+                  {/*  captionLayout="dropdown"*/}
+                  {/*  fromYear={1900}*/}
+                  {/*  toYear={2050}*/}
+                  {/*  classNames={{*/}
+                  {/*    dropdown_month: '[&>div]:hidden',*/}
+                  {/*    dropdown_year: '[&>div]:hidden',*/}
+                  {/*    caption_dropdowns: 'grid grid-cols-2',*/}
+                  {/*    vhidden: 'col-span-2',*/}
+                  {/*    dropdown: 'rounded-[var(--radius)] focus:bg-accent [&>option]:bg-primary'*/}
+                  {/*  }}*/}
+                  {/*/>*/}
                 </PopoverContent>
               </Popover>
               <FormMessage />
