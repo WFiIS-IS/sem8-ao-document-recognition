@@ -8,11 +8,14 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog';
 import { PlusIcon } from 'lucide-react';
-import { PersonForm, PersonFormData } from './PersonForm';
+import { PersonForm } from './PersonForm';
+import { useState } from 'react';
 
 export function AddPersonDialog() {
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" className="bg-primary text-primary-foreground">
           Add Person <PlusIcon className="ml-2 h-4 w-4" />
@@ -21,14 +24,9 @@ export function AddPersonDialog() {
       <DialogContent className="max-h-screen gap-8 overflow-auto">
         <DialogHeader>
           <DialogTitle>Add Person</DialogTitle>
-          <DialogDescription>Adds new person based on picture</DialogDescription>
+          <DialogDescription>Adds new person based on document</DialogDescription>
         </DialogHeader>
-        <PersonForm
-          buttonText="Create"
-          onSubmit={(values: PersonFormData) => {
-            console.log(values);
-          }}
-        />
+        <PersonForm closeDialog={() => setDialogOpen(false)} />
       </DialogContent>
     </Dialog>
   );

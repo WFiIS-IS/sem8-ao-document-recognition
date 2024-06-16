@@ -36,11 +36,6 @@ export const router = createBrowserRouter(
               path: '/',
               lazy: () =>
                 import('./pages/Dashboard').then((module) => ({ Component: module.Dashboard }))
-            },
-            {
-              path: '/add_person',
-              lazy: () =>
-                import('./pages/AddPerson').then((module) => ({ Component: module.AddPerson }))
             }
           ]
         },

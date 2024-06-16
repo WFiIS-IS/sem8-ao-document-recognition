@@ -16,11 +16,13 @@ import { CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useToast } from '@/components/ui/use-toast.ts';
 import { Label } from '@/components/ui/label.tsx';
 import { useApiClient } from '@/api/useApiClient.ts';
 import { Spinner } from '@/components/ui/spinner.tsx';
+import { useCreatePersonMutation } from '@/api/mutations/hooks/useCreatePersonMutation.ts';
+import { PersonCreateDto } from '@/api/dto/person-create-dto.ts';
 
 const personFormSchema = z.object({
   first_name: z.string().min(1),
@@ -28,18 +30,17 @@ const personFormSchema = z.object({
   pesel: z.string().regex(/^\d{11}$/, { message: 'should contain 11 numbers' }),
   date_of_birth: z.date().optional(),
   id_number: z.string().optional(),
-  driving_license_number: z.string().optional()
+  driving_license_number: z.string().optional(),
+  face_vector: z.string().min(1, { message: 'You must select image/document with persons face' })
 });
 
 export type PersonFormData = z.infer<typeof personFormSchema>;
 
 export type PersonFormProps = {
-  personData?: PersonFormData;
-  buttonText: string;
-  onSubmit: (values: PersonFormData) => void;
+  closeDialog: () => void;
 };
 
-export function PersonForm(props: PersonFormProps) {
+export function PersonForm({ closeDialog }: PersonFormProps) {
   const { toast } = useToast();
   const client = useApiClient();
 
@@ -48,7 +49,7 @@ export function PersonForm(props: PersonFormProps) {
 
   const form = useForm<PersonFormData>({
     resolver: zodResolver(personFormSchema),
-    defaultValues: props.personData || {
+    defaultValues: {
       first_name: '',
       last_name: '',
       pesel: '',
@@ -57,6 +58,24 @@ export function PersonForm(props: PersonFormProps) {
       driving_license_number: ''
     },
     disabled: analysingImage
+  });
+
+  const createPersonMutation = useCreatePersonMutation({
+    onSuccess: () => {
+      toast({
+        title: 'Person created',
+        description: 'The person has been successfully created'
+      });
+    },
+    onError: (error) => {
+      console.log(error);
+      toast({
+        title: 'Failed to create person',
+        description:
+          'There was an error creating the person. Check if the person does not exist already.',
+        variant: 'destructive'
+      });
+    }
   });
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,9 +99,13 @@ export function PersonForm(props: PersonFormProps) {
 
           const person = response.data;
 
-          person.date_of_birth ??= undefined;
+          person.pesel ??= '';
+          person.first_name ??= '';
+          person.last_name ??= '';
+          person.date_of_birth = person.date_of_birth ? new Date(person.date_of_birth) : undefined;
           person.id_number ??= '';
           person.driving_license_number ??= '';
+          person.face_vector = person?.face_vector ? `[${person.face_vector.toString()}]` : '';
 
           form.reset(person);
         } catch (error) {
@@ -104,32 +127,65 @@ export function PersonForm(props: PersonFormProps) {
     }
   };
 
-  useEffect(() => {
-    if (props.personData) {
-      form.reset(props.personData);
-    }
-  }, [props.personData, form.reset]);
+  const createPerson = () => {
+    const values = form.getValues();
+
+    const person: PersonCreateDto = {
+      first_name: values.first_name,
+      last_name: values.last_name,
+      pesel: values.pesel,
+      date_of_birth: values.date_of_birth
+        ? format(new Date(values.date_of_birth), 'yyyy-MM-dd')
+        : null,
+      id_number: values.id_number ? values.id_number : null,
+      driving_license_number: values.driving_license_number ? values.driving_license_number : null,
+      face_vector: values.face_vector
+    };
+
+    console.log(person);
+
+    createPersonMutation.mutate(person);
+
+    closeDialog();
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(props.onSubmit)} className="space-y-2">
-        <div className="flex flex-col space-y-2">
-          <Label htmlFor="documentFile" className="flex-grow">
-            Fill Information from document
-          </Label>
-          <Input id="documentFile" type="file" onChange={handleFileChange} className="flex-grow" />
-        </div>
-        {imageUrl && (
-          <div className="my-2 flex items-center justify-center">
-            <img src={imageUrl} alt="Uploaded" className="max-h-[70px]" />
-          </div>
-        )}
-        {analysingImage && (
-          <div className="flex gap-2">
-            <span className="text-sm text-muted-foreground">Analysing image...</span>
-            <Spinner size="small" />
-          </div>
-        )}
+      <form onSubmit={form.handleSubmit(createPerson)} className="space-y-2">
+        <FormField
+          control={form.control}
+          name="face_vector"
+          render={() => (
+            <FormItem>
+              <div className="flex flex-col space-y-2">
+                <Label htmlFor="documentFile" className="flex-grow">
+                  Fill information from document
+                </Label>
+                <span className="text-sm text-muted-foreground">
+                  at least image with persons face
+                </span>
+                <Input
+                  id="documentFile"
+                  type="file"
+                  onChange={handleFileChange}
+                  className="flex-grow"
+                />
+              </div>
+              {imageUrl && (
+                <div className="my-2 flex items-center justify-center">
+                  <img src={imageUrl} alt="Uploaded" className="max-h-[70px]" />
+                </div>
+              )}
+              {analysingImage && (
+                <div className="flex gap-2">
+                  <span className="text-sm text-muted-foreground">Analysing image...</span>
+                  <Spinner size="small" />
+                </div>
+              )}
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="pesel"
@@ -235,9 +291,10 @@ export function PersonForm(props: PersonFormProps) {
             </FormItem>
           )}
         />
+
         <div className="flex justify-end">
           <Button type="submit" className="mt-3">
-            {props.buttonText}
+            Create
           </Button>
         </div>
       </form>
