@@ -29,9 +29,21 @@ module.exports = {
         'plugin:prettier/recommended'
     ],
     rules: {
-        'prettier/prettier': ['error', {}, { usePrettierrc: true }],
+        'prettier/prettier': ['error', {}, {usePrettierrc: true}],
         'react/react-in-jsx-scope': 'off',
         'react/prop-types': 0,
-        '@typescript-eslint/explicit-function-return-type': 'off'
+        '@typescript-eslint/explicit-function-return-type': 'off',
+        "@typescript-eslint/no-unused-vars": [
+            "error",
+            {
+                "args": "all",
+                "argsIgnorePattern": "^_",
+                "caughtErrors": "all",
+                "caughtErrorsIgnorePattern": "^_",
+                "destructuredArrayIgnorePattern": "^_",
+                "varsIgnorePattern": "^_",
+                "ignoreRestSiblings": true
+            }
+        ]
     }
 };
