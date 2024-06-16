@@ -4,33 +4,21 @@ from api.persons.models import Person
 
 
 class PersonSerializer(serializers.ModelSerializer):
-    # face_vector = serializers.ListField(
-    #     child=serializers.FloatField(),
-    #     allow_empty=True,
-    #     min_length=128,
-    #     max_length=128,
-    #     write_only=True,
-    #     required=False,
-    #     allow_null=True,
-    # )
-
     class Meta:
         model = Person
-        fields = ["pesel", "first_name", "last_name", "face_vector"]
+        fields = [
+            "pesel",
+            "first_name",
+            "last_name",
+            "date_of_birth",
+            "id_number",
+            "driving_license_number",
+            "face_vector",
+        ]
 
         extra_kwargs = {
             "face_vector": {"write_only": True},
         }
-
-    # def create(self, validated_data):
-    #     fv = validated_data.pop("face_vector")
-    #     person = Person.objects.create(**validated_data)
-
-    #     if fv:
-    #         print("ollala", fv)
-    #         fv = FaceVector.objects.create(person=person, face_vector=fv)
-
-    #     return person
 
 
 class ImageUploadSerializer(serializers.Serializer):
@@ -50,7 +38,10 @@ class PersonLookupSerializer(serializers.Serializer):
 
 
 class DocumentAnalyzeSerializer(serializers.Serializer):
+    pesel = serializers.CharField()
     first_name = serializers.CharField()
     last_name = serializers.CharField()
-    pesel = serializers.CharField()
+    date_of_birth = serializers.DateField(allow_null=True, required=False)
+    id_number = serializers.CharField(required=False)
+    driving_license_number = serializers.CharField(required=False)
     face_vector = serializers.ListField(child=serializers.FloatField(), allow_empty=True)

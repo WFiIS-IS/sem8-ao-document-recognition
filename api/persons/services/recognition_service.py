@@ -1,5 +1,6 @@
 import os
 from dataclasses import dataclass
+from datetime import datetime
 
 import boto3
 import cv2
@@ -15,9 +16,12 @@ from azure.core.credentials import AzureKeyCredential
 class Person:
     """Simple person entity"""
 
+    pesel: str
     first_name: str
     last_name: str
-    pesel: str
+    date_of_birth: datetime = None
+    id_number: str = None
+    driving_license_number: str = None
     face_vector: list = None  # 128 item face vector
 
 
@@ -161,19 +165,34 @@ class RecognitionService:
         """
         try:
             for doc in analysis_result.documents:
+                print(doc)
                 match doc.doc_type:
                     case "idDocument.nationalIdentityCard":
-                        # date_of_birth = datetime.strptime(doc.fields["DateOfBirth"].content, "%d.%m.%Y").date()
-                        personal_number = doc.fields["DocumentNumber"].content
+                        pesel = doc.fields["DocumentNumber"].content
                         first_name = doc.fields["FirstName"].content
                         last_name = doc.fields["LastName"].content
-                        return Person(first_name=first_name, last_name=last_name, pesel=personal_number[-11:])
+                        date_of_birth = datetime.strptime(doc.fields["DateOfBirth"].content, "%d.%m.%Y").date()
+                        document_number = doc.fields["DocumentDiscriminator"].content
+                        return Person(
+                            first_name=first_name,
+                            last_name=last_name,
+                            pesel=pesel[-11:],
+                            date_of_birth=date_of_birth,
+                            id_number=document_number,
+                        )
                     case "idDocument.driverLicense":
-                        # date_of_birth = datetime.strptime(doc.fields["DateOfBirth"].content, "%d.%m.%Y").date()
-                        personal_number = doc.fields["PersonalNumber"].content
+                        pesel = doc.fields["PersonalNumber"].content
                         first_name = doc.fields["FirstName"].content
                         last_name = doc.fields["LastName"].content
-                        return Person(first_name=first_name, last_name=last_name, pesel=personal_number[-11:])
+                        date_of_birth = datetime.strptime(doc.fields["DateOfBirth"].content, "%d.%m.%Y").date()
+                        document_number = doc.fields["DocumentNumber"].content
+                        return Person(
+                            first_name=first_name,
+                            last_name=last_name,
+                            pesel=pesel[-11:],
+                            date_of_birth=date_of_birth,
+                            driving_license_number=document_number,
+                        )
                     case "idDocument":
                         pass
         except Exception:
