@@ -99,7 +99,7 @@ jobs:
         run: |
           set -x
           assets=()
-          for asset in .dist/*; do
+          for asset in ./dist/*; do
             assets+=("$asset")
           done
           tag_name="${GITHUB_REF##*/}"
