@@ -15,6 +15,7 @@ import { format } from 'date-fns';
 import { useDeletePersonMutation } from '@/api/mutations/hooks/useDeletePersonMutation.ts';
 import { useToast } from '@/components/ui/use-toast.ts';
 import { AddPersonDialog } from '@/shared/components/AddPersonDialog';
+import { EditPersonDialog } from '@/shared/components/EditPersonDialog';
 
 type TableMeta = {
   deletePerson: (pesel: string) => void;
@@ -63,7 +64,13 @@ const columns: ColumnDef<Person>[] = [
               <DotsHorizontalIcon className="hover:cursor-pointer" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem className="hover:cursor-pointer">Edit</DropdownMenuItem>
+              <EditPersonDialog data={row.original}>
+                <DropdownMenuItem
+                  className="hover:cursor-pointer"
+                  onSelect={(e) => e.preventDefault()}>
+                  Edit
+                </DropdownMenuItem>
+              </EditPersonDialog>
               <DropdownMenuItem
                 className="hover:cursor-pointer"
                 onClick={() => meta.deletePerson(row.original.pesel)}>
