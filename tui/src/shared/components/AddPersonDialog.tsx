@@ -18,7 +18,7 @@ export function AddPersonDialog() {
           Add Person <PlusIcon className="ml-2 h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="gap-8">
+      <DialogContent className="max-h-screen gap-8 overflow-auto">
         <DialogHeader>
           <DialogTitle>Add Person</DialogTitle>
           <DialogDescription>Adds new person based on picture</DialogDescription>

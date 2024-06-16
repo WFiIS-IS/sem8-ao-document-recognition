@@ -19,7 +19,7 @@ export function EditPersonDialog({ children, data }: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-h-screen overflow-auto">
         <DialogHeader>
           <DialogTitle>Edit Person</DialogTitle>
           <DialogDescription>Edit personal information</DialogDescription>
