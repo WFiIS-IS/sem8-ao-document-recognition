@@ -114,10 +114,10 @@ jobs:
           gh release upload v0.0.1 ./dist/yarn.lock
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # gh release upload v0.0.1 ./dist/**/tui_*.exe
-          # gh release upload v0.0.1 ./dist/**/tui_*.msi
-          # gh release upload v0.0.1 ./dist/**/tui_*.deb
-          # gh release upload v0.0.1 ./dist/**/tui_*.rpm
+# gh release upload v0.0.1 ./dist/**/tui_*.exe
+# gh release upload v0.0.1 ./dist/**/tui_*.msi
+# gh release upload v0.0.1 ./dist/**/tui_*.deb
+# gh release upload v0.0.1 ./dist/**/tui_*.rpm
 
       # - name: Upload Release Asset
       #   uses: actions/upload-release-asset@v1
