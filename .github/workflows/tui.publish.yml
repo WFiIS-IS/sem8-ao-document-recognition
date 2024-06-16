@@ -110,7 +110,8 @@ jobs:
       - name: Custom upload release asset
         run: |
           echo "Uploading asset..."
-          gh release upload v0.0.1 ./dist/*
+          ls -la ./dist
+          gh release upload v0.0.1 ./dist/yarn.lock
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # gh release upload v0.0.1 ./dist/**/tui_*.exe
