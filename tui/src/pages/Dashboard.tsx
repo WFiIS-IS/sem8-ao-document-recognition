@@ -67,7 +67,8 @@ const columns: ColumnDef<Person>[] = [
               <DropdownMenuItem className="hover:cursor-pointer">Edit</DropdownMenuItem>
               <DropdownMenuItem
                 className="hover:cursor-pointer"
-                onClick={() => meta.deletePerson(row.original.pesel)}>
+                onClick={() => meta.deletePerson(row.original.pesel)}
+              >
                 <span className="text-red-600">Delete</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
