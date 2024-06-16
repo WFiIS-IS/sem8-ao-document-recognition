@@ -1,18 +1,17 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.tsx';
 import { DataTable } from '../shared/components/table/data-table';
-import { DotsHorizontalIcon, PlusIcon } from '@radix-ui/react-icons';
+import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import {
   DropdownMenu,
+  DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuContent
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { usePersonsQuery } from '@/api/query/hooks/usePersonsQuery';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Person } from '@/models/person.ts';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { Button } from '@/components/ui/button.tsx';
 import { useDeletePersonMutation } from '@/api/mutations/hooks/useDeletePersonMutation.ts';
 import { useToast } from '@/components/ui/use-toast.ts';
 import { AddPersonDialog } from '@/shared/components/AddPersonDialog';
@@ -25,7 +24,7 @@ const columns: ColumnDef<Person>[] = [
   {
     accessorKey: 'pesel',
     header: 'PESEL',
-    cell: ({ row }) => row.original.pesel
+    cell: ({ row }) => <div className="font-medium">{row.original.pesel}</div>
   },
   {
     accessorKey: 'first_name',
@@ -67,8 +66,7 @@ const columns: ColumnDef<Person>[] = [
               <DropdownMenuItem className="hover:cursor-pointer">Edit</DropdownMenuItem>
               <DropdownMenuItem
                 className="hover:cursor-pointer"
-                onClick={() => meta.deletePerson(row.original.pesel)}
-              >
+                onClick={() => meta.deletePerson(row.original.pesel)}>
                 <span className="text-red-600">Delete</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
