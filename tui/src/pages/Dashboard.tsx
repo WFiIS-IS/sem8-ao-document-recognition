@@ -1,23 +1,25 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.tsx';
-import { DataTable } from '../shared/components/table/data-table';
+import { format } from 'date-fns';
+import { useRef, useState } from 'react';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import type { ColumnDef } from '@tanstack/react-table';
+import { Edit, Trash2 } from 'lucide-react';
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.tsx';
+import { DataTable } from '@/shared/components/table/data-table';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { usePersonsQuery } from '@/api/query/hooks/usePersonsQuery';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Person } from '@/models/person.ts';
-import { ColumnDef } from '@tanstack/react-table';
-import { format } from 'date-fns';
-import { useDeletePersonMutation } from '@/api/mutations/hooks/useDeletePersonMutation.ts';
-import { useToast } from '@/components/ui/use-toast.ts';
+import { Person } from '@/models/person';
+import { useDeletePersonMutation } from '@/api/mutations/hooks/useDeletePersonMutation';
+import { useToast } from '@/components/ui/use-toast';
 import { AddPersonDialog } from '@/shared/components/AddPersonDialog';
 import { EditPersonDialog } from '@/shared/components/EditPersonDialog';
-import { useRef, useState } from 'react';
-import { Button } from '@/components/ui/button.tsx';
+import { Button } from '@/components/ui/button';
+import { DeletePersonAlert } from '@/shared/components/DeletePersonAlert';
 
 type TableMeta = {
   deletePerson: (pesel: string) => void;
@@ -96,17 +98,16 @@ const columns: ColumnDef<Person>[] = [
                 data={row.original}
                 onOpenChange={handleDialogItemOpenChange}
                 onSelect={handleDialogItemSelect}>
-                <DropdownMenuItem
-                  className="hover:cursor-pointer"
-                  onSelect={(e) => e.preventDefault()}>
-                  Edit
-                </DropdownMenuItem>
+                <Edit className="mr-2 h-4 w-4" />
+                <span>Edit</span>
               </EditPersonDialog>
-              <DropdownMenuItem
-                className="hover:cursor-pointer"
-                onClick={() => meta.deletePerson(row.original.pesel)}>
+              <DeletePersonAlert
+                onConfirm={() => meta.deletePerson(row.original.pesel)}
+                onOpenChange={handleDialogItemOpenChange}
+                onSelect={handleDialogItemSelect}>
+                <Trash2 className="mr-2 h-4 w-4 text-red-600" />
                 <span className="text-red-600">Delete</span>
-              </DropdownMenuItem>
+              </DeletePersonAlert>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
