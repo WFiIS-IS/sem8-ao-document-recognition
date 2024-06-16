@@ -1,4 +1,3 @@
-import { PersonDTO } from '@/api/dto/person-dto';
 import { Person } from '@/models/person';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -6,7 +5,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -19,6 +17,7 @@ import { CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
+import { useEffect } from 'react';
 
 export type PersonFormProps = {
   personData?: Person;
@@ -44,6 +43,12 @@ export function PersonForm(props: PersonFormProps) {
       pesel: ''
     }
   });
+
+  useEffect(() => {
+    if (props.personData) {
+      form.reset(props.personData);
+    }
+  }, [props.personData, form.reset]);
 
   return (
     <Form {...form}>

@@ -4,22 +4,48 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PersonForm, personFormSchema } from '@/shared/components/PersonForm';
 import { useState } from 'react';
+import { useToast } from '@/components/ui/use-toast';
 import { z } from 'zod';
+import { useApiClient } from '@/api/useApiClient';
 
 export function AddPerson() {
-  const [_file, setFile] = useState<File | null>(null);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [personData, _] = useState<Person | undefined>();
+  const client = useApiClient();
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [_file, setFile] = useState<File | undefined>(undefined);
+  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
+  const { toast } = useToast();
+
+  const [personData, setPersonData] = useState<Person | undefined>(undefined);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const selectedFile = e.target.files[0];
       if (selectedFile.type === 'image/jpeg' || selectedFile.type === 'image/png') {
         setFile(selectedFile);
         const url = URL.createObjectURL(selectedFile);
         setImageUrl(url);
+        const formData = new FormData();
+        formData.append('image', selectedFile);
+
+        try {
+          const response = await client.post('/person/analyze-document', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          });
+          setPersonData(response.data);
+        } catch (error) {
+          console.error('Error uploading file:', error);
+          toast({
+            title: 'Upload failed',
+            description: 'There was an error uploading the file. Please try again.'
+          });
+        }
       } else {
-        alert('Incorrect format');
+        toast({
+          title: 'Incorrect format',
+          description: 'Please select a valid image format'
+        });
       }
     }
   };
