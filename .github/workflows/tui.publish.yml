@@ -110,11 +110,11 @@ jobs:
       - name: Custom upload release asset
         run: |
           echo "Uploading asset..."
-          gh release upload ${{ steps.create_release.outputs.tag_name }} ./dist/**/tui_*.exe
-          gh release upload ${{ steps.create_release.outputs.tag_name }} ./dist/**/tui_*.msi
-          gh release upload ${{ steps.create_release.outputs.tag_name }} ./dist/**/tui_*.deb
-          gh release upload ${{ steps.create_release.outputs.tag_name }} ./dist/**/tui_*.rpm
-          gh release upload ${{ steps.create_release.outputs.tag_name }} ./dist/*
+          gh release upload ${{ steps.create_release.outputs.upload_url }} ./dist/**/tui_*.exe
+          gh release upload ${{ steps.create_release.outputs.upload_url }} ./dist/**/tui_*.msi
+          gh release upload ${{ steps.create_release.outputs.upload_url }} ./dist/**/tui_*.deb
+          gh release upload ${{ steps.create_release.outputs.upload_url }} ./dist/**/tui_*.rpm
+          gh release upload ${{ steps.create_release.outputs.upload_url }} ./dist/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
