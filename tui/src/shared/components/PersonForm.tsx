@@ -27,7 +27,7 @@ const personFormSchema = z.object({
   last_name: z.string().min(1),
   pesel: z.string().regex(/^\d{11}$/, { message: 'should contain 11 numbers' }),
   date_of_birth: z.date().optional(),
-  id_number: z.string().optional().nullable(),
+  id_number: z.string().optional(),
   driving_license_number: z.string().optional()
 });
 
