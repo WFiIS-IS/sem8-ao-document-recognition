@@ -15,8 +15,8 @@ jobs:
         settings:
           - platform: 'ubuntu-22.04'
             args: ''
-          - platform: 'windows-latest'
-            args: ''
+          # - platform: 'windows-latest'
+          #   args: ''
 
     runs-on: ${{ matrix.settings.platform }}
     steps:
@@ -102,7 +102,7 @@ jobs:
         run: |
           set -x
           assets=()
-          for asset in ./artifacts/**; do
+          for asset in ./artifacts/**/*; do
             assets+=("$asset")
           done
           tag_name="${GITHUB_REF##*/}"
