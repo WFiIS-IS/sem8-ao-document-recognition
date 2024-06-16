@@ -1,5 +1,4 @@
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
@@ -17,25 +16,28 @@ import { cn } from '@/lib/utils';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { Person } from '@/models/person';
-
-const personFormSchema = z.object({
-  first_name: z.string().min(1),
-  last_name: z.string().min(1),
-  pesel: z.string().regex(/^\d{11}$/, { message: 'should contain 11 numbers' }),
-  date_of_birth: z.date().optional(),
-  id_number: z.string().optional(),
-  driving_license_number: z.string().optional()
-});
-
-type PersonFormData = z.infer<typeof personFormSchema>;
+import { useUpdatePersonMutation } from '@/api/mutations/hooks/useUpdatePersonMutation';
+import { toast } from '@/components/ui/use-toast';
+import { Label } from '@/components/ui/label';
+import { z } from 'zod';
 
 type Props = {
   data: Person;
 };
 
+const formSchema = z.object({
+  first_name: z.string(),
+  last_name: z.string(),
+  date_of_birth: z.date().optional(),
+  id_number: z.string().optional(),
+  driving_license_number: z.string().optional()
+});
+
+type formDataType = z.infer<typeof formSchema>;
+
 export function EditPersonForm({ data }: Props) {
-  const form = useForm<PersonFormData>({
-    resolver: zodResolver(personFormSchema),
+  const form = useForm<formDataType>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       ...data,
       date_of_birth: data.date_of_birth ?? undefined,
@@ -44,26 +46,30 @@ export function EditPersonForm({ data }: Props) {
     }
   });
 
-  function onSubmit(values: PersonFormData) {
-    console.log(values);
+  const udpatePersonMutation = useUpdatePersonMutation({
+    onSuccess: () => {
+      toast({
+        title: 'Person updated'
+      });
+    },
+    onError: (error: string) => {
+      console.log(error);
+      toast({
+        title: 'Something went wrong',
+        description: 'Some errors occured while updating person',
+        variant: 'destructive'
+      });
+    }
+  });
+
+  function onSubmit(values: formDataType) {
+    udpatePersonMutation.mutate({ pesel: data.pesel, ...values });
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-        <FormField
-          control={form.control}
-          name="pesel"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>PESEL</FormLabel>
-              <FormControl>
-                <Input placeholder="00000000000" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <Label>PESEL</Label> {data.pesel}
         <FormField
           control={form.control}
           name="first_name"
