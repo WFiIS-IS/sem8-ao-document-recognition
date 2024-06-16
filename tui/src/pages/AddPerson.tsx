@@ -3,8 +3,10 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Person } from '@/models/person';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { PersonForm } from '@/shared/PersonForm';
+import { PersonForm } from '@/shared/components/PersonForm';
 import { useState } from 'react';
+import { PersonDTO } from '@/api/dto/person-dto';
+import { z } from 'zod';
 
 export function AddPerson() {
   const [_file, setFile] = useState<File | null>(null);
@@ -14,7 +16,7 @@ export function AddPerson() {
   //   first_name: 'Jane',
   //   last_name: 'Doe'
   // };
-  const [personData, _] = useState<Person | null>(null);
+  const [personData, _] = useState<Person | undefined>();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -51,11 +53,14 @@ export function AddPerson() {
                 <img src={imageUrl} alt="Uploaded" className="max-h-[70px]" />
               </div>
             )}
-            {personData && <PersonForm personData={personData} />}
+            <PersonForm
+              personData={personData}
+              buttonText="DONE"
+              onSubmit={(values: z.infer<typeof PersonDTO>) => {
+                console.log(values);
+              }}
+            />
           </CardContent>
-          <CardFooter>
-            <Button onClick={() => {}}>DONE</Button>
-          </CardFooter>
         </Card>
       </div>
     </div>
