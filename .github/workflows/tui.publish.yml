@@ -72,7 +72,7 @@ jobs:
         with:
           name: TUI
           path: |
-            /bin/sh
+            ./tui/yarn.lock
 
       # - uses: tauri-apps/tauri-action@v0
       #   env:
