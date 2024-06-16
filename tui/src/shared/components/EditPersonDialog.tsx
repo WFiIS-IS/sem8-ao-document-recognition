@@ -1,24 +1,38 @@
 import {
-  Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DropdownDialogItem
 } from '@/components/ui/dialog';
-import React from 'react';
+import React, { ComponentProps, useState } from 'react';
 import { EditPersonForm } from './EditPersonForm';
 import { Person } from '@/models/person';
 
-type Props = {
+type EditPersonDialogProps = {
   children: React.ReactNode;
   data: Person;
-};
+} & Pick<ComponentProps<typeof DropdownDialogItem>, 'onSelect' | 'onOpenChange'>;
 
-export function EditPersonDialog({ children, data }: Props) {
+export function EditPersonDialog({
+  children,
+  data,
+  onOpenChange,
+  ...props
+}: EditPersonDialogProps) {
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleDialogOpenChange = (open: boolean) => {
+    setDialogOpen(open);
+    onOpenChange?.(open);
+  };
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <DropdownDialogItem
+      dropdownItem={children}
+      dialogProps={{ open: dialogOpen }}
+      onOpenChange={handleDialogOpenChange}
+      {...props}>
       <DialogContent className="max-h-screen overflow-auto">
         <DialogHeader>
           <DialogTitle>Edit Person</DialogTitle>
@@ -26,6 +40,6 @@ export function EditPersonDialog({ children, data }: Props) {
         </DialogHeader>
         <EditPersonForm data={data} />
       </DialogContent>
-    </Dialog>
+    </DropdownDialogItem>
   );
 }

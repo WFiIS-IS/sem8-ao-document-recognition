@@ -16,6 +16,8 @@ import { useDeletePersonMutation } from '@/api/mutations/hooks/useDeletePersonMu
 import { useToast } from '@/components/ui/use-toast.ts';
 import { AddPersonDialog } from '@/shared/components/AddPersonDialog';
 import { EditPersonDialog } from '@/shared/components/EditPersonDialog';
+import { useRef, useState } from 'react';
+import { Button } from '@/components/ui/button.tsx';
 
 type TableMeta = {
   deletePerson: (pesel: string) => void;
@@ -57,14 +59,43 @@ const columns: ColumnDef<Person>[] = [
     id: 'actions',
     cell: ({ row, table }) => {
       const meta = table.options.meta as TableMeta;
+      const dropdownTriggerRef = useRef<HTMLButtonElement>(null);
+      const focusRef = useRef<HTMLElement | null>(null);
+      const [hasOpenDialog, setHasOpenDialog] = useState(false);
+      const [dropdownOpen, setDropdownOpen] = useState(false);
+
+      const handleDialogItemSelect = () => {
+        focusRef.current = dropdownTriggerRef.current;
+      };
+
+      const handleDialogItemOpenChange = (open: boolean) => {
+        setHasOpenDialog(open);
+        if (!open) {
+          setDropdownOpen(false);
+        }
+      };
+
       return (
         <div className="flex justify-end">
-          <DropdownMenu>
+          <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
             <DropdownMenuTrigger asChild>
-              <DotsHorizontalIcon className="hover:cursor-pointer" />
+              <Button variant="ghost" ref={dropdownTriggerRef}>
+                <DotsHorizontalIcon className="hover:cursor-pointer" />
+              </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <EditPersonDialog data={row.original}>
+            <DropdownMenuContent
+              hidden={hasOpenDialog}
+              onCloseAutoFocus={(event) => {
+                event.preventDefault();
+                if (focusRef.current) {
+                  focusRef.current?.focus();
+                  focusRef.current = null;
+                }
+              }}>
+              <EditPersonDialog
+                data={row.original}
+                onOpenChange={handleDialogItemOpenChange}
+                onSelect={handleDialogItemSelect}>
                 <DropdownMenuItem
                   className="hover:cursor-pointer"
                   onSelect={(e) => e.preventDefault()}>
