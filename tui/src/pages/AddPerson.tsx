@@ -1,11 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Person } from '@/models/person';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { PersonForm, personFormSchema } from '@/shared/components/PersonForm';
+import { PersonForm, PersonFormData } from '@/shared/components/PersonForm';
 import { useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
-import { z } from 'zod';
 import { useApiClient } from '@/api/useApiClient';
 
 export function AddPerson() {
@@ -15,7 +13,7 @@ export function AddPerson() {
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
   const { toast } = useToast();
 
-  const [personData, setPersonData] = useState<Person | undefined>(undefined);
+  const [personData, setPersonData] = useState<PersonFormData | undefined>(undefined);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -75,7 +73,7 @@ export function AddPerson() {
             <PersonForm
               personData={personData}
               buttonText="DONE"
-              onSubmit={(values: z.infer<typeof personFormSchema>) => {
+              onSubmit={(values: PersonFormData) => {
                 console.log(values);
               }}
             />

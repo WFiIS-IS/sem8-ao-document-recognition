@@ -1,4 +1,3 @@
-import { Person } from '@/models/person';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,13 +18,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { useEffect } from 'react';
 
-export type PersonFormProps = {
-  personData?: Person;
-  buttonText: string;
-  onSubmit: (values: z.infer<typeof personFormSchema>) => void;
-};
-
-export const personFormSchema = z.object({
+const personFormSchema = z.object({
   first_name: z.string().min(1),
   last_name: z.string().min(1),
   pesel: z.string().regex(/^\d{11}$/, { message: 'should contain 11 numbers' }),
@@ -34,8 +27,16 @@ export const personFormSchema = z.object({
   driving_license_number: z.string().optional()
 });
 
+export type PersonFormData = z.infer<typeof personFormSchema>;
+
+export type PersonFormProps = {
+  personData?: PersonFormData;
+  buttonText: string;
+  onSubmit: (values: PersonFormData) => void;
+};
+
 export function PersonForm(props: PersonFormProps) {
-  const form = useForm<z.infer<typeof personFormSchema>>({
+  const form = useForm<PersonFormData>({
     resolver: zodResolver(personFormSchema),
     defaultValues: props.personData || {
       first_name: '',
@@ -106,8 +107,7 @@ export function PersonForm(props: PersonFormProps) {
                       className={cn(
                         'w-[240px] pl-3 text-left font-normal',
                         !field.value && 'text-muted-foreground'
-                      )}
-                    >
+                      )}>
                       {field.value ? (
                         format(field.value, 'PPP')
                       ) : (

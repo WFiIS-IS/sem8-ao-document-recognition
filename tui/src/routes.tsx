@@ -41,11 +41,6 @@ export const router = createBrowserRouter(
               path: '/add_person',
               lazy: () =>
                 import('./pages/AddPerson').then((module) => ({ Component: module.AddPerson }))
-            },
-            {
-              path: '/person/:id',
-              lazy: () =>
-                import('./pages/PersonInfo').then((module) => ({ Component: module.PersonInfo }))
             }
           ]
         },
