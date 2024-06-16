@@ -95,25 +95,39 @@ jobs:
           name: TUI
           path: ./dist
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          # tag_name: ${{ github.ref }}
-          tag_name: v0.0.1
-          release_name: Release v0.0.1
-          draft: false
-          prerelease: false
+      # - name: Create Release
+      #   id: create_release
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     # tag_name: ${{ github.ref }}
+      #     tag_name: v0.0.1
+      #     release_name: Release v0.0.1
+      #     draft: false
+      #     prerelease: false
 
-      - name: Custom upload release asset
+      # - name: Custom upload release asset
+      #   run: |
+      #     echo "Uploading asset..."
+      #     ls -la ./dist
+      #     gh release upload v0.0.1 ./dist/yarn.lock
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Release
         run: |
-          echo "Uploading asset..."
-          ls -la ./dist
-          gh release upload v0.0.1 ./dist/yarn.lock
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          set -x
+          assets=()
+          for asset in .dist/*; do
+            assets+=("-a" "$asset")
+          done
+          tag_name="${GITHUB_REF##*/}"
+          echo $tag_name
+          tag_name="v0.0.1"
+          hub release create "${assets[@]}" -m "$tag_name" "$tag_name"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 # gh release upload v0.0.1 ./dist/**/tui_*.exe
 # gh release upload v0.0.1 ./dist/**/tui_*.msi
 # gh release upload v0.0.1 ./dist/**/tui_*.deb
