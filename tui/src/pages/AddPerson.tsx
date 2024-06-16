@@ -1,8 +1,9 @@
+import { useState, type ChangeEvent } from 'react';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PersonForm, PersonFormData } from '@/shared/components/PersonForm';
-import { useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import { useApiClient } from '@/api/useApiClient';
 
@@ -15,7 +16,7 @@ export function AddPerson() {
 
   const [personData, setPersonData] = useState<PersonFormData | undefined>(undefined);
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const selectedFile = e.target.files[0];
       if (selectedFile.type === 'image/jpeg' || selectedFile.type === 'image/png') {
