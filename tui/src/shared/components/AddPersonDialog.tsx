@@ -18,13 +18,13 @@ export function AddPersonDialog() {
           Add Person <PlusIcon className="ml-2 h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="gap-8">
         <DialogHeader>
           <DialogTitle>Add Person</DialogTitle>
           <DialogDescription>Adds new person based on picture</DialogDescription>
         </DialogHeader>
         <PersonForm
-          buttonText="DONE"
+          buttonText="Create"
           onSubmit={(values: PersonFormData) => {
             console.log(values);
           }}

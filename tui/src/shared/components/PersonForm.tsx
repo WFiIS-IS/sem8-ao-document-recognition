@@ -16,14 +16,18 @@ import { CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useToast } from '@/components/ui/use-toast.ts';
+import { Label } from '@/components/ui/label.tsx';
+import { useApiClient } from '@/api/useApiClient.ts';
+import { Spinner } from '@/components/ui/spinner.tsx';
 
 const personFormSchema = z.object({
   first_name: z.string().min(1),
   last_name: z.string().min(1),
   pesel: z.string().regex(/^\d{11}$/, { message: 'should contain 11 numbers' }),
   date_of_birth: z.date().optional(),
-  id_number: z.string().optional(),
+  id_number: z.string().optional().nullable(),
   driving_license_number: z.string().optional()
 });
 
@@ -36,14 +40,69 @@ export type PersonFormProps = {
 };
 
 export function PersonForm(props: PersonFormProps) {
+  const { toast } = useToast();
+  const client = useApiClient();
+
+  const [analysingImage, setAnalysingImage] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
+
   const form = useForm<PersonFormData>({
     resolver: zodResolver(personFormSchema),
     defaultValues: props.personData || {
       first_name: '',
       last_name: '',
-      pesel: ''
-    }
+      pesel: '',
+      date_of_birth: undefined,
+      id_number: '',
+      driving_license_number: ''
+    },
+    disabled: analysingImage
   });
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const selectedFile = e.target.files[0];
+      if (selectedFile.type === 'image/jpeg' || selectedFile.type === 'image/png') {
+        const url = URL.createObjectURL(selectedFile);
+
+        setImageUrl(url);
+        setAnalysingImage(true);
+
+        const formData = new FormData();
+        formData.append('image', selectedFile);
+
+        try {
+          const response = await client.post<PersonFormData>('/person/analyze-document', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          });
+
+          const person = response.data;
+
+          person.date_of_birth ??= undefined;
+          person.id_number ??= '';
+          person.driving_license_number ??= '';
+
+          form.reset(person);
+        } catch (error) {
+          console.error('Error uploading file:', error);
+          toast({
+            title: 'Upload failed',
+            description: 'There was an error uploading the file. Please try again.'
+          });
+        } finally {
+          console.log('setting');
+          setAnalysingImage(false);
+        }
+      } else {
+        toast({
+          title: `Incorrect format ${selectedFile.type}`,
+          description: 'Please select a valid image format: jpeg or png'
+        });
+      }
+    }
+  };
 
   useEffect(() => {
     if (props.personData) {
@@ -54,12 +113,29 @@ export function PersonForm(props: PersonFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(props.onSubmit)} className="space-y-2">
+        <div className="flex flex-col space-y-2">
+          <Label htmlFor="documentFile" className="flex-grow">
+            Fill Information from document
+          </Label>
+          <Input id="documentFile" type="file" onChange={handleFileChange} className="flex-grow" />
+        </div>
+        {imageUrl && (
+          <div className="my-2 flex items-center justify-center">
+            <img src={imageUrl} alt="Uploaded" className="max-h-[70px]" />
+          </div>
+        )}
+        {analysingImage && (
+          <div className="flex gap-2">
+            <span className="text-sm text-muted-foreground">Analysing image...</span>
+            <Spinner size="small" />
+          </div>
+        )}
         <FormField
           control={form.control}
           name="pesel"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>PESESL</FormLabel>
+              <FormLabel>PESEL</FormLabel>
               <FormControl>
                 <Input placeholder="00000000000" {...field} />
               </FormControl>
@@ -105,7 +181,7 @@ export function PersonForm(props: PersonFormProps) {
                     <Button
                       variant={'outline'}
                       className={cn(
-                        'w-[240px] pl-3 text-left font-normal',
+                        'pl-3 text-left font-normal',
                         !field.value && 'text-muted-foreground'
                       )}>
                       {field.value ? (
@@ -120,7 +196,7 @@ export function PersonForm(props: PersonFormProps) {
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
                     mode="single"
-                    selected={field.value || undefined}
+                    selected={field.value}
                     onSelect={field.onChange}
                     initialFocus
                     captionLayout="dropdown"
@@ -166,9 +242,11 @@ export function PersonForm(props: PersonFormProps) {
             </FormItem>
           )}
         />
-        <Button type="submit" className="mt-[20rem]">
-          {props.buttonText}
-        </Button>
+        <div className="flex justify-end">
+          <Button type="submit" className="mt-3">
+            {props.buttonText}
+          </Button>
+        </div>
       </form>
     </Form>
   );

@@ -42,8 +42,8 @@ export function AddPerson() {
         }
       } else {
         toast({
-          title: 'Incorrect format',
-          description: 'Please select a valid image format'
+          title: `Incorrect format ${selectedFile.type}`,
+          description: 'Please select a valid image format: jpeg or png'
         });
       }
     }
