@@ -21,10 +21,6 @@ import { toast } from '@/components/ui/use-toast';
 import { Label } from '@/components/ui/label';
 import { z } from 'zod';
 
-type Props = {
-  data: Person;
-};
-
 const formSchema = z.object({
   first_name: z.string(),
   last_name: z.string(),
@@ -35,7 +31,12 @@ const formSchema = z.object({
 
 type formDataType = z.infer<typeof formSchema>;
 
-export function EditPersonForm({ data }: Props) {
+type Props = {
+  data: Person;
+  closeDialog: () => void;
+};
+
+export function EditPersonForm({ data, closeDialog }: Props) {
   const form = useForm<formDataType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,6 +52,7 @@ export function EditPersonForm({ data }: Props) {
       toast({
         title: 'Person updated'
       });
+      closeDialog();
     },
     onError: (error: string) => {
       console.log(error);
@@ -169,7 +171,11 @@ export function EditPersonForm({ data }: Props) {
             </FormItem>
           )}
         />
-        <Button type="submit">SUBMIT</Button>
+        <div className="flex justify-end">
+          <Button type="submit" className="mt-3">
+            Confirm
+          </Button>
+        </div>
       </form>
     </Form>
   );

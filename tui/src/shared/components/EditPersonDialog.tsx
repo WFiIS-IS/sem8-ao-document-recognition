@@ -38,7 +38,7 @@ export function EditPersonDialog({
           <DialogTitle>Edit Person</DialogTitle>
           <DialogDescription>Edit personal information</DialogDescription>
         </DialogHeader>
-        <EditPersonForm data={data} />
+        <EditPersonForm data={data} closeDialog={() => setDialogOpen(false)} />
       </DialogContent>
     </DropdownDialogItem>
   );
