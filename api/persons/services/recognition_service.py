@@ -84,6 +84,8 @@ class RecognitionService:
             image_bytes = cv2.imencode(".jpg", im)[1].tostring()
             return image_bytes
 
+        return image
+
     @staticmethod
     def __read_document_data_aws(image: bytes) -> Person:
         """Read and analyze document with AWS Textract
@@ -165,7 +167,6 @@ class RecognitionService:
         """
         try:
             for doc in analysis_result.documents:
-                print(doc)
                 match doc.doc_type:
                     case "idDocument.nationalIdentityCard":
                         pesel = doc.fields["DocumentNumber"].content
