@@ -105,7 +105,7 @@ jobs:
           tag_name="${GITHUB_REF##*/}"
           echo $tag_name
           tag_name="v0.0.1"
-          hub release create "${assets[@]}" -m "$tag_name" "$tag_name"
+          gh release create "${assets[@]}" -m "$tag_name" "$tag_name"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 # gh release upload v0.0.1 ./dist/**/tui_*.exe
