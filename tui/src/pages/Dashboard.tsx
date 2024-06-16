@@ -15,6 +15,7 @@ import { format } from 'date-fns';
 import { Button } from '@/components/ui/button.tsx';
 import { useDeletePersonMutation } from '@/api/mutations/hooks/useDeletePersonMutation.ts';
 import { useToast } from '@/components/ui/use-toast.ts';
+import { AddPersonDialog } from '@/shared/components/AddPersonDialog';
 
 type TableMeta = {
   deletePerson: (pesel: string) => void;
@@ -119,9 +120,7 @@ export function Dashboard() {
     <div className="flex flex-col gap-4">
       <div className="flex max-w-full flex-col flex-wrap items-stretch gap-4">
         <div className="flex justify-end">
-          <Button variant="outline">
-            Create <PlusIcon className="ml-2 h-4 w-4" />
-          </Button>
+          <AddPersonDialog />
         </div>
 
         <Card className="flex flex-grow flex-col gap-8">
