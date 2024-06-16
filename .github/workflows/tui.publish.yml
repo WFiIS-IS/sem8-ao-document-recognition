@@ -13,8 +13,8 @@ jobs:
       fail-fast: false
       matrix:
         settings:
-          # - platform: 'ubuntu-22.04' # for Tauri v1 you could replace this with ubuntu-20.04.
-          #   args: ''
+          - platform: 'ubuntu-22.04'
+            args: ''
           - platform: 'windows-latest'
             args: ''
 
@@ -46,7 +46,7 @@ jobs:
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
-          workspaces: './src-tauri -> target'
+          workspaces: './tui/src-tauri -> target'
 
       - name: install frontend dependencies
         working-directory: ./tui
@@ -61,7 +61,12 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: TUI
-          path: ./tui/src-tauri/target/release/bundle/nsis/ # Adjust path to your executable
+          path: |
+            ./tui/src-tauri/target/release/bundle/nsis/tui_*.exe
+            ./tui/src-tauri/target/release/bundle/msi/tui_*.msi
+            ./tui/src-tauri/target/release/bundle/deb/tui_*.deb
+            ./tui/src-tauri/target/release/bundle/rpm/tui_*.rpm
+
 
       # - uses: tauri-apps/tauri-action@v0
       #   env:
