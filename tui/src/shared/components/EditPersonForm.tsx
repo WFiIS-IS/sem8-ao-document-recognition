@@ -56,7 +56,7 @@ export function EditPersonForm({ data }: Props) {
           name="pesel"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>PESESL</FormLabel>
+              <FormLabel>PESEL</FormLabel>
               <FormControl>
                 <Input placeholder="00000000000" {...field} />
               </FormControl>
@@ -82,7 +82,7 @@ export function EditPersonForm({ data }: Props) {
           name="last_name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>First Name</FormLabel>
+              <FormLabel>Last Name</FormLabel>
               <FormControl>
                 <Input placeholder="Doe" {...field} />
               </FormControl>
