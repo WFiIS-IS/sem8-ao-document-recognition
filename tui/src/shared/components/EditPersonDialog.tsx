@@ -1,45 +1,32 @@
 import {
+  Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTitle,
-  DropdownDialogItem
+  DialogTitle
 } from '@/components/ui/dialog';
-import React, { ComponentProps, useState } from 'react';
+import { ComponentProps } from 'react';
 import { EditPersonForm } from './EditPersonForm';
 import { Person } from '@/models/person';
 
 type EditPersonDialogProps = {
-  children: React.ReactNode;
   data: Person;
-} & Pick<ComponentProps<typeof DropdownDialogItem>, 'onSelect' | 'onOpenChange'>;
+} & Pick<ComponentProps<typeof Dialog>, 'open' | 'onOpenChange'>;
 
-export function EditPersonDialog({
-  children,
-  data,
-  onOpenChange,
-  ...props
-}: EditPersonDialogProps) {
-  const [dialogOpen, setDialogOpen] = useState(false);
-
-  const handleDialogOpenChange = (open: boolean) => {
-    setDialogOpen(open);
+export function EditPersonDialog({ data, onOpenChange, ...props }: EditPersonDialogProps) {
+  const handleOpenChange = (open: boolean) => {
     onOpenChange?.(open);
   };
 
   return (
-    <DropdownDialogItem
-      dropdownItem={children}
-      dialogProps={{ open: dialogOpen }}
-      onOpenChange={handleDialogOpenChange}
-      {...props}>
+    <Dialog onOpenChange={onOpenChange} {...props}>
       <DialogContent className="max-h-screen overflow-auto">
         <DialogHeader>
           <DialogTitle>Edit Person</DialogTitle>
           <DialogDescription>Edit personal information</DialogDescription>
         </DialogHeader>
-        <EditPersonForm data={data} closeDialog={() => setDialogOpen(false)} />
+        <EditPersonForm data={data} closeDialog={() => handleOpenChange(false)} />
       </DialogContent>
-    </DropdownDialogItem>
+    </Dialog>
   );
 }

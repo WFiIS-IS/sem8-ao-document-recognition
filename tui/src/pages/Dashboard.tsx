@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import type { ColumnDef } from '@tanstack/react-table';
 import { Edit, Trash2 } from 'lucide-react';
@@ -9,6 +9,7 @@ import { DataTable } from '@/shared/components/table/data-table';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { usePersonsQuery } from '@/api/query/hooks/usePersonsQuery';
@@ -62,53 +63,48 @@ const columns: ColumnDef<Person>[] = [
     id: 'actions',
     cell: ({ row, table }) => {
       const meta = table.options.meta as TableMeta;
-      const dropdownTriggerRef = useRef<HTMLButtonElement>(null);
-      const focusRef = useRef<HTMLElement | null>(null);
-      const [hasOpenDialog, setHasOpenDialog] = useState(false);
-      const [dropdownOpen, setDropdownOpen] = useState(false);
 
-      const handleDialogItemSelect = () => {
-        focusRef.current = dropdownTriggerRef.current;
-      };
+      const [editPersonDialogOpen, setEditPersonDialogOpen] = useState(false);
+      const [dialogDeleteItemOpen, setDialogDeleteItemOpen] = useState(false);
 
-      const handleDialogItemOpenChange = (open: boolean) => {
-        setHasOpenDialog(open);
-        if (!open) {
-          setDropdownOpen(false);
-        }
+      const deletePersonConfirmed = () => {
+        meta.deletePerson(row.original.pesel);
+        setDialogDeleteItemOpen(false);
       };
 
       return (
         <div className="flex justify-end">
-          <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
+          <EditPersonDialog
+            data={row.original}
+            onOpenChange={setEditPersonDialogOpen}
+            open={editPersonDialogOpen}
+          />
+          <DeletePersonAlert
+            onConfirm={deletePersonConfirmed}
+            onOpenChange={setDialogDeleteItemOpen}
+            open={dialogDeleteItemOpen}
+          />
+          <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" ref={dropdownTriggerRef}>
+              <Button variant="ghost">
                 <DotsHorizontalIcon className="hover:cursor-pointer" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
-              hidden={hasOpenDialog}
-              onCloseAutoFocus={(event) => {
-                event.preventDefault();
-                if (focusRef.current) {
-                  focusRef.current?.focus();
-                  focusRef.current = null;
-                }
-              }}>
-              <EditPersonDialog
-                data={row.original}
-                onOpenChange={handleDialogItemOpenChange}
-                onSelect={handleDialogItemSelect}>
+            <DropdownMenuContent>
+              <DropdownMenuItem
+                className="hover:cursor-pointer"
+                onClick={() => setEditPersonDialogOpen(true)}
+              >
                 <Edit className="mr-2 h-4 w-4" />
                 <span>Edit</span>
-              </EditPersonDialog>
-              <DeletePersonAlert
-                onConfirm={() => meta.deletePerson(row.original.pesel)}
-                onOpenChange={handleDialogItemOpenChange}
-                onSelect={handleDialogItemSelect}>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="hover:cursor-pointer"
+                onClick={() => setDialogDeleteItemOpen(true)}
+              >
                 <Trash2 className="mr-2 h-4 w-4 text-red-600" />
                 <span className="text-red-600">Delete</span>
-              </DeletePersonAlert>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -162,13 +158,12 @@ export function Dashboard() {
     <div className="flex flex-col gap-4">
       <div className="flex max-w-full flex-col flex-wrap items-stretch gap-4">
         <div className="flex justify-end gap-2">
-          {/*if persons are filtered show button to clear filter of other colo*/}
-
           {filteredPersons ? (
             <Button
               onClick={() => setFilteredPersons(undefined)}
               variant="outline"
-              className="bg-primary text-primary-foreground">
+              className="bg-primary text-primary-foreground"
+            >
               Clear Filter
             </Button>
           ) : (
@@ -183,9 +178,14 @@ export function Dashboard() {
             <CardTitle className="text-xl">Persons</CardTitle>
           </CardHeader>
           <CardContent>
-            {(data && <PersonTable data={data} meta={{ deletePerson }} />) || (
-              <Skeleton className="h-[20rem] w-full rounded-xl" />
-            )}
+            {(data && (
+              <PersonTable
+                data={data}
+                meta={{
+                  deletePerson
+                }}
+              />
+            )) || <Skeleton className="h-[20rem] w-full rounded-xl" />}
           </CardContent>
         </Card>
       </div>

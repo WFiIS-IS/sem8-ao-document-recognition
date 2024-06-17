@@ -18,10 +18,10 @@ import { format } from 'date-fns';
 import { Person } from '@/models/person';
 import { useUpdatePersonMutation } from '@/api/mutations/hooks/useUpdatePersonMutation';
 import { toast } from '@/components/ui/use-toast';
-import { Label } from '@/components/ui/label';
 import { z } from 'zod';
 
 const formSchema = z.object({
+  pesel: z.string(),
   first_name: z.string().min(1),
   last_name: z.string().min(1),
   date_of_birth: z.date().optional(),
@@ -40,14 +40,16 @@ export function EditPersonForm({ data, closeDialog }: Props) {
   const form = useForm<formDataType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      ...data,
+      pesel: data.pesel ?? '',
+      first_name: data.first_name ?? '',
+      last_name: data.last_name ?? '',
       date_of_birth: data.date_of_birth ?? undefined,
-      id_number: data.id_number ?? undefined,
-      driving_license_number: data.driving_license_number ?? undefined
+      id_number: data.id_number ?? '',
+      driving_license_number: data.driving_license_number ?? ''
     }
   });
 
-  const udpatePersonMutation = useUpdatePersonMutation({
+  const updatePersonMutation = useUpdatePersonMutation({
     onSuccess: () => {
       toast({
         title: 'Person updated'
@@ -58,20 +60,32 @@ export function EditPersonForm({ data, closeDialog }: Props) {
       console.log(error);
       toast({
         title: 'Something went wrong',
-        description: 'Some errors occured while updating person',
+        description: 'Some errors occurred while updating person',
         variant: 'destructive'
       });
     }
   });
 
   function onSubmit(values: formDataType) {
-    udpatePersonMutation.mutate({ pesel: data.pesel, ...values });
+    updatePersonMutation.mutate({ ...values });
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-        <Label>PESEL</Label> {data.pesel}
+        <FormField
+          control={form.control}
+          name="pesel"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>PESEL</FormLabel>
+              <FormControl>
+                <Input disabled={true} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="first_name"
@@ -110,9 +124,10 @@ export function EditPersonForm({ data, closeDialog }: Props) {
                     <Button
                       variant={'outline'}
                       className={cn(
-                        'w-[240px] pl-3 text-left font-normal',
+                        'pl-3 text-left font-normal',
                         !field.value && 'text-muted-foreground'
-                      )}>
+                      )}
+                    >
                       {field.value ? (
                         format(field.value, 'PPP')
                       ) : (
@@ -131,13 +146,6 @@ export function EditPersonForm({ data, closeDialog }: Props) {
                     captionLayout="dropdown"
                     fromYear={1900}
                     toYear={2050}
-                    classNames={{
-                      dropdown_month: '[&>div]:hidden',
-                      dropdown_year: '[&>div]:hidden',
-                      caption_dropdowns: 'grid grid-cols-2',
-                      vhidden: 'col-span-2',
-                      dropdown: 'rounded-[var(--radius)] focus:bg-accent [&>option]:bg-primary'
-                    }}
                   />
                 </PopoverContent>
               </Popover>
@@ -172,7 +180,13 @@ export function EditPersonForm({ data, closeDialog }: Props) {
           )}
         />
         <div className="flex justify-end">
-          <Button type="submit" className="mt-3">
+          <Button
+            type="submit"
+            className="mt-3"
+            onClick={() => {
+              console.log(form.getValues());
+            }}
+          >
             Confirm
           </Button>
         </div>

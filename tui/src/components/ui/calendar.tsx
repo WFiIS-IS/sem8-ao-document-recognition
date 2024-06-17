@@ -67,7 +67,8 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
               value={value?.toString()}
               onValueChange={(value) => {
                 handleChange(value);
-              }}>
+              }}
+            >
               <SelectTrigger className="pr-1.5 focus:ring-0">
                 <SelectValue>{selected?.props?.children}</SelectValue>
               </SelectTrigger>
@@ -76,7 +77,8 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
                   {options.map((option, id: number) => (
                     <SelectItem
                       key={`${option.props.value}-${id}`}
-                      value={option.props.value?.toString() ?? ''}>
+                      value={option.props.value?.toString() ?? ''}
+                    >
                       {option.props.children}
                     </SelectItem>
                   ))}

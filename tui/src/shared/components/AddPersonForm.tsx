@@ -40,7 +40,7 @@ export type PersonFormProps = {
   closeDialog: () => void;
 };
 
-export function PersonForm({ closeDialog }: PersonFormProps) {
+export function AddPersonForm({ closeDialog }: PersonFormProps) {
   const { toast } = useToast();
   const client = useApiClient();
 
@@ -240,7 +240,8 @@ export function PersonForm({ closeDialog }: PersonFormProps) {
                       className={cn(
                         'pl-3 text-left font-normal',
                         !field.value && 'text-muted-foreground'
-                      )}>
+                      )}
+                    >
                       {field.value ? (
                         format(field.value, 'PPP')
                       ) : (

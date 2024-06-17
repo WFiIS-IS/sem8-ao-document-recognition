@@ -1,35 +1,24 @@
-import { ComponentProps, ReactNode, useState } from 'react';
+import { ComponentProps } from 'react';
 
 import {
-  AlertDialogDropdownItem,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
   AlertDialogDescription,
   AlertDialogFooter,
-  AlertDialogCancel,
-  AlertDialogAction
+  AlertDialogHeader,
+  AlertDialogTitle
 } from '@/components/ui/alert-dialog';
 import { buttonVariants } from '@/components/ui/button.variants.ts';
 
 export type DeletePersonAlertProps = {
-  children: ReactNode;
   onConfirm: () => void;
-} & Pick<ComponentProps<typeof AlertDialogDropdownItem>, 'onSelect' | 'onOpenChange'>;
+} & Pick<ComponentProps<typeof AlertDialog>, 'open' | 'onOpenChange'>;
 
-export function DeletePersonAlert({ children, onConfirm, onOpenChange }: DeletePersonAlertProps) {
-  const [dialogOpen, setDialogOpen] = useState(false);
-
-  const handleDialogOpenChange = (open: boolean) => {
-    setDialogOpen(open);
-    onOpenChange?.(open);
-  };
-
+export function DeletePersonAlert({ onConfirm, ...props }: DeletePersonAlertProps) {
   return (
-    <AlertDialogDropdownItem
-      dropdownItem={children}
-      dialogProps={{ open: dialogOpen }}
-      onOpenChange={handleDialogOpenChange}>
+    <AlertDialog {...props}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure you want to delete this person?</AlertDialogTitle>
@@ -41,11 +30,12 @@ export function DeletePersonAlert({ children, onConfirm, onOpenChange }: DeleteP
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             className={buttonVariants({ variant: 'destructive' })}
-            onClick={onConfirm}>
+            onClick={onConfirm}
+          >
             Delete
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
-    </AlertDialogDropdownItem>
+    </AlertDialog>
   );
 }

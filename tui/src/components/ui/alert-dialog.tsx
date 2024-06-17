@@ -120,7 +120,8 @@ const AlertDialogDropdownItem = React.forwardRef<
             event.preventDefault();
             onSelect?.();
           }}
-          ref={ref}>
+          ref={ref}
+        >
           {dropdownItem}
         </DropdownMenuItem>
       </AlertDialogTrigger>

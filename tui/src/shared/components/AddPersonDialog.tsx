@@ -8,7 +8,7 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog';
 import { PlusIcon } from 'lucide-react';
-import { PersonForm } from './PersonForm';
+import { AddPersonForm } from './AddPersonForm.tsx';
 import { useState } from 'react';
 
 export function AddPersonDialog() {
@@ -26,7 +26,7 @@ export function AddPersonDialog() {
           <DialogTitle>Add Person</DialogTitle>
           <DialogDescription>Adds new person based on document</DialogDescription>
         </DialogHeader>
-        <PersonForm closeDialog={() => setDialogOpen(false)} />
+        <AddPersonForm closeDialog={() => setDialogOpen(false)} />
       </DialogContent>
     </Dialog>
   );
