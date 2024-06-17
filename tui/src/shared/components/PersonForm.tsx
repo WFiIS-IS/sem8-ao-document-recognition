@@ -293,7 +293,7 @@ export function PersonForm({ closeDialog }: PersonFormProps) {
         />
 
         <div className="flex justify-end">
-          <Button type="submit" className="mt-3">
+          <Button type="submit" className="mt-3" disabled={analysingImage}>
             Create
           </Button>
         </div>

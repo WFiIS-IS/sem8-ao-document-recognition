@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import type { ColumnDef } from '@tanstack/react-table';
 import { Edit, Trash2 } from 'lucide-react';
@@ -18,6 +18,7 @@ import { useDeletePersonMutation } from '@/api/mutations/hooks/useDeletePersonMu
 import { useToast } from '@/components/ui/use-toast';
 import { AddPersonDialog } from '@/shared/components/AddPersonDialog';
 import { EditPersonDialog } from '@/shared/components/EditPersonDialog';
+import { FindPersonDialog } from '@/shared/components/FindPersonDialog';
 import { Button } from '@/components/ui/button';
 import { DeletePersonAlert } from '@/shared/components/DeletePersonAlert';
 
@@ -129,7 +130,10 @@ function PersonTable({ data, meta }: { data: Person[]; meta: TableMeta }) {
 
 export function Dashboard() {
   const { toast } = useToast();
-  const { data, error } = usePersonsQuery();
+  const { data: persons, error } = usePersonsQuery();
+  const [filteredPersons, setFilteredPersons] = useState<Person[] | undefined>(undefined);
+
+  const data = useMemo(() => filteredPersons || persons, [filteredPersons, persons]);
 
   if (error)
     return <div className="text-destructive">Upps... Something went wrong: [{error.message}]</div>;
@@ -157,11 +161,24 @@ export function Dashboard() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex max-w-full flex-col flex-wrap items-stretch gap-4">
-        <div className="flex justify-end">
+        <div className="flex justify-end gap-2">
+          {/*if persons are filtered show button to clear filter of other colo*/}
+
+          {filteredPersons ? (
+            <Button
+              onClick={() => setFilteredPersons(undefined)}
+              variant="outline"
+              className="bg-primary text-primary-foreground">
+              Clear Filter
+            </Button>
+          ) : (
+            <FindPersonDialog setFilteredPersons={setFilteredPersons} />
+          )}
+
           <AddPersonDialog />
         </div>
 
-        <Card className="flex flex-grow flex-col gap-8">
+        <Card className="flex flex-grow flex-col gap-4">
           <CardHeader className="pb-2">
             <CardTitle className="text-xl">Persons</CardTitle>
           </CardHeader>
