@@ -22,8 +22,8 @@ import { Label } from '@/components/ui/label';
 import { z } from 'zod';
 
 const formSchema = z.object({
-  first_name: z.string(),
-  last_name: z.string(),
+  first_name: z.string().min(1),
+  last_name: z.string().min(1),
   date_of_birth: z.date().optional(),
   id_number: z.string().optional(),
   driving_license_number: z.string().optional()
