@@ -18,6 +18,8 @@ import { useDeletePersonMutation } from '@/api/mutations/hooks/useDeletePersonMu
 import { useToast } from '@/components/ui/use-toast';
 import { AddPersonDialog } from '@/shared/components/AddPersonDialog';
 import { EditPersonDialog } from '@/shared/components/EditPersonDialog';
+import { FindPersonDialog } from '@/shared/components/FindPersonDialog';
+import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { DeletePersonAlert } from '@/shared/components/DeletePersonAlert';
 
@@ -127,10 +129,17 @@ function PersonTable({ data, meta }: { data: Person[]; meta: TableMeta }) {
   );
 }
 
+// gównokod ale nie mam siły poprawiać. jak coś to jutro ogarnę
 export function Dashboard() {
   const { toast } = useToast();
   const { data, error } = usePersonsQuery();
-
+  const [filterBy, setFilterBy] = useState<string[] | undefined>(undefined);
+  useEffect(() => {
+    if (filterBy && Array.isArray(filterBy)) {
+      const filtered = data?.filter((person) => filterBy.includes(person.pesel));
+      console.log('filtered', filtered);
+    }
+  }, [filterBy, data]);
   if (error)
     return <div className="text-destructive">Upps... Something went wrong: [{error.message}]</div>;
 
@@ -159,11 +168,13 @@ export function Dashboard() {
       <div className="flex max-w-full flex-col flex-wrap items-stretch gap-4">
         <div className="flex justify-end">
           <AddPersonDialog />
+          <FindPersonDialog setFilter={setFilterBy} />
         </div>
 
         <Card className="flex flex-grow flex-col gap-8">
           <CardHeader className="pb-2">
             <CardTitle className="text-xl">Persons</CardTitle>
+            <Button>REFRESH</Button>
           </CardHeader>
           <CardContent>
             {(data && <PersonTable data={data} meta={{ deletePerson }} />) || (
