@@ -17,7 +17,7 @@
     ]
   },
   "productName": "tui",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "identifier": "lol.wfis.document-recognition",
   "plugins": {},
   "app": {
