@@ -7,23 +7,34 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog';
-import { PlusIcon } from 'lucide-react';
-import { FindPersonForm, findPersonProps } from './FindPersonForm';
+import { FindPersonForm } from './FindPersonForm';
+import { Search } from 'lucide-react';
+import { useState } from 'react';
+import { Person } from '@/models/person.ts';
 
-export function FindPersonDialog(props: findPersonProps) {
+export type FindPersonFormProps = {
+  setFilteredPersons: (persons: Person[]) => void;
+};
+
+export function FindPersonDialog({ setFilteredPersons }: FindPersonFormProps) {
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="ml-2 bg-primary text-primary-foreground">
-          Find Person <PlusIcon className="ml-2 h-4 w-4" />
+        <Button variant="outline" className="ml-2 bg-background">
+          Find Person <Search className="ml-2 h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-h-screen gap-8 overflow-auto">
         <DialogHeader>
           <DialogTitle>Find Person</DialogTitle>
-          <DialogDescription>Find person with picture</DialogDescription>
+          <DialogDescription>Find person by the photo/document</DialogDescription>
         </DialogHeader>
-        <FindPersonForm {...props} />
+        <FindPersonForm
+          setFilteredPersons={setFilteredPersons}
+          closeDialog={() => setDialogOpen(false)}
+        />
       </DialogContent>
     </Dialog>
   );
