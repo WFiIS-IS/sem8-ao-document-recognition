@@ -1,101 +1,72 @@
-# Document Generation
+# Document Recognition
 
-## Face recognition
-https://github.com/ageitgey/face_recognition
+The project is designed to let user upload and store user documents, find person by face. It consists of 2 parts:
 
-for face recognition. Is is popular, installable via pip and has example of face identification and comparison
+* Backend: API written in Python using Django
+* Frontend: desktop application written in React using Tauri
 
-https://github.com/ageitgey/face_recognition?tab=readme-ov-file#identify-faces-in-pictures
+## Installation
 
-Below an example of making cli tool based on face_recognition that learns faces from the set and then identifies unlabeled faces
+To install an application, just download installator for your operation system from the most recent release and run it.
 
-https://realpython.com/face-recognition-with-python/
+## Flow
 
-## Face generation
 
-StyleGAN3 by nvidia: https://github.com/NVlabs/stylegan3
 
-DeepFaceLab here just for fun: https://github.com/iperov/DeepFaceLab
 
-# Backend development
+## Architecture
 
-## Prerequisites
+![Architecture](./assets/architecture.png)
 
-### Mise
+#### Backend utilizes:
 
-The latest mise installation can be found at [the official mise website](https://mise.jdx.dev/getting-started.html)
+* [face_recognition](https://github.com/ageitgey/face_recognition) - for face vectorization.
+* [AWS Rekognition](https://aws.amazon.com/rekognition/) - to find document on the image.
+* [AWS Textract](https://aws.amazon.com/textract/) - to extract text from the document (ELS only).
+* [Azure AI Document Intelligence](https://azure.microsoft.com/en-us/products/ai-services/ai-document-intelligence) - to extract text from the document (Driving license, Identity card).
+* [pgvecto.rs](https://github.com/tensorchord/pgvecto.rs) - to store and compare face vectors.
 
-For short version, you can run the following commands:
 
-```bash
-$ curl https://mise.run | sh
-$ echo 'export PATH="$HOME/.mise/bin:$PATH"' >> ~/.bashrc; echo 'export PATH="$HOME/.mise/bin:$PATH"' >> ~/.zshrc
-```
+#### Frontend utilizes:
 
-Restart your terminal
+* [React](https://react.dev/) - for building user interface.
+* [Shadcn](https://ui.shadcn.com/) - as a componenet library.
+* [React Query](https://tanstack.com/query/latest) - for data fetching, caching and auto refetching.
+* [Zod](https://github.com/colinhacks/zod) - for typescript schema validation.
+* [Tauri](https://tauri.app/) - to deliver React application as a desktop application.
 
-- Restart Bash
 
-```bash
-$ exec bash
-```
+## Folder structure
 
-- Restart Zsh
 
-```bash
-$ exec zsh
-```
+* **document-generation** (R&D) - folder contains primary research. It is not used in production. It contains notebooks for different tasks:
+    * Face generation using [stylegan3](https://github.com/NVlabs/stylegan3) library.
+    * Document generation using [opencv](https://opencv.org/).
+    * Document analysis
+    * Document face extraction, vectorization and comparison
 
-Verify the installation by running the following command:
+    The folder also contains geneated documents and faces that can be utilized for testing.
 
-```bash
-$ mise version
-2024.4.5 linux-arm64 (d60d850 2024-04-15)
-```
+* **api** - folder contains Django project that is hosted separatly. It utilizes some
+functions from R&D folder.
 
-### System dependencies
+* **db** - folder contains database experimental features and can provide an idea how vectors are stored in production.
 
-- Debian/Ubuntu
+* **ui** - first version of the ui written in [PySide](https://wiki.qt.io/Qt_for_Python). At some
+point we recognized that UI we want to build is too complex for PySide and decided to switch to React with Tauri.
 
-```bash
-sudo apt install build-essential gdb lcov pkg-config \
-      libbz2-dev libffi-dev libgdbm-dev libgdbm-compat-dev liblzma-dev \
-      libncurses5-dev libreadline6-dev libsqlite3-dev libssl-dev \
-      lzma lzma-dev tk-dev uuid-dev zlib1g-dev cmake
-```
+* **tui (Tauri UI)** - folder contains React project delivered as a desktop application using [Tauri](https://tauri.studio/).
 
-### Docker
+* **assets** - folder contains images used in README.
 
-## Setting up the project
+* **docker** - we dockerized the api so some relevant files are stored here.
 
-1. Clone the repository
+* **personal** - our project also works with real ELS and Driving license documents. For convinience and testing purposes it can be safely stored in this folder as the content is not pushed to the repository.
 
-```bash
-$ git clone https://github.com/WFiIS-IS/sem8-ao-document-recognition.git
-```
+* **.github** - contains workflows for the project. We have full CI/CD pipeline for the project. Backend is fetched from the repository and dockerized using Portainer (https://www.portainer.io/).
+Frontend is being built by Github Actions and deployed to the release page.
 
-2. Change directory to the project
+The Repository also has pre-commit hooks to ensure code quality and utilizes some convinient tools such as:
 
-```bash
-$ cd sem8-ao-document-recognition
-```
-
-3. Initialize mise
-
-```bash
-$ mise trust
-$ mise settings set experimental true
-$ mise install
-```
-
-4. Run setup task
-
-```bash
-$ mise run setup-dev
-```
-
-5. Run the development server
-
-```bash
-$ mise run dev
-```
+* [mise](https://github.com/jdx/mise) - to simplify some everyday tasks and tools installation.
+* [pip-tools](https://github.com/jazzband/pip-tools) - a set of command line tools to help manage python packages.
